@@ -1,0 +1,69 @@
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime project settings for Experiment 2 -- Waiting-room controller
+#
+# Top-level entity is the schematic (waiting_room.bdf), matching the
+# assignment's requirement to use Quartus's schematic-capture facilities.
+# It hierarchically instantiates updown_counter4.v (the 4-bit up/down
+# counter block from Table 1) and wires it to discrete logic-gate/flip-flop
+# primitives for the rest of the circuit -- exactly the structure shown in
+# the report's block diagram. rtl/waiting_room.v is kept as a separate,
+# independently-simulated RTL model (see sim/tb_waiting_room.v); it is not
+# part of this project's compiled sources, to avoid a duplicate top-level
+# entity name against the schematic.
+#
+# FAMILY/DEVICE below is a placeholder (Cyclone IV E, EP4CE22F17C6 -- a
+# common DE0-Nano-class part). Change FAMILY/DEVICE and every pin assignment
+# in the "Pin assignments" section to match the exact FPGA board used in the
+# lab session before compiling on real hardware.
+#
+# -------------------------------------------------------------------------- #
+
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE22F17C6
+set_global_assignment -name TOP_LEVEL_ENTITY waiting_room
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 25.1
+set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name SDC_FILE waiting_room.sdc
+
+# -------------------------------------------------------------------------- #
+# Source files
+# -------------------------------------------------------------------------- #
+
+set_global_assignment -name BDF_FILE waiting_room.bdf
+set_global_assignment -name VERILOG_FILE ../rtl/updown_counter4.v
+
+# -------------------------------------------------------------------------- #
+# Pin assignments (PLACEHOLDERS -- replace with the lab board's actual pins)
+# -------------------------------------------------------------------------- #
+
+# set_location_assignment PIN_R8  -to clk
+# set_location_assignment PIN_J15 -to rst
+# set_location_assignment PIN_E1  -to in_sensor
+# set_location_assignment PIN_E2  -to out_sensor
+# set_location_assignment PIN_M1  -to ent
+# set_location_assignment PIN_M2  -to t_allow
+# set_location_assignment PIN_A4  -to open_door
+# set_location_assignment PIN_A5  -to close_door
+# set_location_assignment PIN_B4  -to occupancy0
+# set_location_assignment PIN_B5  -to occupancy1
+# set_location_assignment PIN_C4  -to occupancy2
+# set_location_assignment PIN_C5  -to occupancy3
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

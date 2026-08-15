@@ -1,0 +1,16 @@
+Fitter Status : Successful - Sat Aug  8 22:59:02 2026
+Quartus Prime Version : 25.1std.0 Build 1129 10/21/2025 SC Lite Edition
+Revision Name : waiting_room
+Top-level Entity Name : waiting_room
+Family : Cyclone IV E
+Device : EP4CE22F17C6
+Timing Models : Final
+Total logic elements : 10 / 22,320 ( < 1 % )
+    Total combinational functions : 10 / 22,320 ( < 1 % )
+    Dedicated logic registers : 6 / 22,320 ( < 1 % )
+Total registers : 6
+Total pins : 12 / 154 ( 8 % )
+Total virtual pins : 0
+Total memory bits : 0 / 608,256 ( 0 % )
+Embedded Multiplier 9-bit elements : 0 / 132 ( 0 % )
+Total PLLs : 0 / 4 ( 0 % )

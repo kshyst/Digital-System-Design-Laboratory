@@ -1,0 +1,130 @@
+$comment
+	File created using the following command:
+		vcd file lax_exp_1.msim.vcd -direction
+$end
+$date
+	Sun Aug 09 06:32:23 2026
+$end
+$version
+	ModelSim Version 10.1d
+$end
+$timescale
+	1ps
+$end
+$scope module main_vlg_vec_tst $end
+$var reg 1 ! A0 $end
+$var reg 1 " A1 $end
+$var reg 1 # A2 $end
+$var reg 1 $ A3 $end
+$var reg 1 % B0 $end
+$var reg 1 & B1 $end
+$var reg 1 ' B2 $end
+$var reg 1 ( B3 $end
+$var reg 1 ) C0 $end
+$var reg 1 * C1 $end
+$var reg 1 + C2 $end
+$var reg 1 , C3 $end
+$var reg 1 - D0 $end
+$var reg 1 . D1 $end
+$var reg 1 / D2 $end
+$var reg 1 0 D3 $end
+$var wire 1 1 Y $end
+$var wire 1 2 sampler $end
+$scope module i1 $end
+$var wire 1 3 gnd $end
+$var wire 1 4 vcc $end
+$var wire 1 5 unknown $end
+$var tri1 1 6 devclrn $end
+$var tri1 1 7 devpor $end
+$var tri1 1 8 devoe $end
+$var wire 1 9 inst2|inst9~0_combout $end
+$var wire 1 : D2~input_o $end
+$var wire 1 ; C2~input_o $end
+$var wire 1 < B2~input_o $end
+$var wire 1 = A2~input_o $end
+$var wire 1 > Y~output_o $end
+$var wire 1 ? C0~input_o $end
+$var wire 1 @ C1~input_o $end
+$var wire 1 A C3~input_o $end
+$var wire 1 B inst3|inst9~0_combout $end
+$var wire 1 C inst3|inst16~0_combout $end
+$var wire 1 D D3~input_o $end
+$var wire 1 E D1~input_o $end
+$var wire 1 F D0~input_o $end
+$var wire 1 G inst7|inst16~0_combout $end
+$var wire 1 H inst5|inst14~0_combout $end
+$var wire 1 I inst7|inst9~0_combout $end
+$var wire 1 J inst5|inst8~0_combout $end
+$var wire 1 K A0~input_o $end
+$var wire 1 L A1~input_o $end
+$var wire 1 M A3~input_o $end
+$var wire 1 N inst|inst9~0_combout $end
+$var wire 1 O inst|inst16~0_combout $end
+$var wire 1 P B3~input_o $end
+$var wire 1 Q B1~input_o $end
+$var wire 1 R B0~input_o $end
+$var wire 1 S inst2|inst16~0_combout $end
+$var wire 1 T inst4|inst14~0_combout $end
+$var wire 1 U inst2222~0_combout $end
+$var wire 1 V inst2222~1_combout $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+1!
+0"
+0#
+0$
+1%
+0&
+0'
+0(
+0)
+0*
+0+
+0,
+0-
+0.
+0/
+10
+01
+x2
+03
+14
+x5
+16
+17
+18
+19
+0:
+0;
+0<
+0=
+0>
+0?
+0@
+0A
+0B
+0C
+1D
+0E
+0F
+1G
+1H
+0I
+0J
+1K
+0L
+0M
+1N
+0O
+0P
+0Q
+1R
+0S
+1T
+1U
+1V
+$end
+#1000000
