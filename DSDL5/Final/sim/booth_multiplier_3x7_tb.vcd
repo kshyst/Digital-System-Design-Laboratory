@@ -1,0 +1,289 @@
+$date
+	Sun Aug 16 06:34:23 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module booth_multiplier_3x7_tb $end
+$var wire 16 ! Product [15:0] $end
+$var wire 1 " Done $end
+$var reg 1 # Clk $end
+$var reg 8 $ Multiplicand [7:0] $end
+$var reg 8 % Multiplier [7:0] $end
+$var reg 1 & RstN $end
+$var reg 1 ' Start $end
+$scope module dut $end
+$var wire 1 # Clk $end
+$var wire 8 ( Multiplicand [7:0] $end
+$var wire 8 ) Multiplier [7:0] $end
+$var wire 1 & RstN $end
+$var wire 1 ' Start $end
+$var wire 1 * Step $end
+$var wire 16 + Product [15:0] $end
+$var wire 1 , Load $end
+$var wire 1 - LastStep $end
+$var wire 1 " Done $end
+$var parameter 32 . N $end
+$scope module u_control $end
+$var wire 1 # Clk $end
+$var wire 1 & RstN $end
+$var wire 1 ' Start $end
+$var wire 1 * Step $end
+$var wire 1 , Load $end
+$var wire 1 - LastStep $end
+$var wire 1 " Done $end
+$var parameter 2 / CALC $end
+$var parameter 2 0 IDLE $end
+$var parameter 2 1 LOAD $end
+$var parameter 2 2 REPORT $end
+$var reg 2 3 State [1:0] $end
+$upscope $end
+$scope module u_datapath $end
+$var wire 8 4 BmapInit [7:0] $end
+$var wire 1 # Clk $end
+$var wire 1 5 DoAdd $end
+$var wire 1 6 DoSub $end
+$var wire 1 , Load $end
+$var wire 8 7 Multiplicand [7:0] $end
+$var wire 8 8 Multiplier [7:0] $end
+$var wire 1 & RstN $end
+$var wire 1 * Step $end
+$var wire 18 9 Shifted [17:0] $end
+$var wire 4 : Raw [3:0] $end
+$var wire 16 ; Product [15:0] $end
+$var wire 9 < MExt [8:0] $end
+$var wire 1 - LastStep $end
+$var wire 5 = DistWide [4:0] $end
+$var wire 4 > Dist [3:0] $end
+$var wire 9 ? BmapShifted [8:0] $end
+$var wire 9 @ AOp [8:0] $end
+$var parameter 32 A DistW $end
+$var parameter 32 B N $end
+$var parameter 32 C ShiftAmountW $end
+$var reg 9 D A [8:0] $end
+$var reg 8 E Bmap [7:0] $end
+$var reg 8 F M [7:0] $end
+$var reg 8 G Q [7:0] $end
+$var reg 1 H Q_1 $end
+$var reg 4 I Remaining [3:0] $end
+$scope module u_encode $end
+$var wire 9 J Map [8:0] $end
+$var parameter 32 K DistW $end
+$var parameter 33 L MapW $end
+$var parameter 34 M MaxSkip $end
+$var reg 4 N Dist [3:0] $end
+$var integer 32 O k [31:0] $end
+$upscope $end
+$scope module u_map_shift $end
+$var wire 4 P amt [3:0] $end
+$var wire 9 Q din [8:0] $end
+$var parameter 32 R AmountW $end
+$var parameter 33 S W $end
+$var reg 9 T dout [8:0] $end
+$var integer 32 U k [31:0] $end
+$upscope $end
+$scope module u_shift $end
+$var wire 5 V amt [4:0] $end
+$var wire 18 W din [17:0] $end
+$var parameter 32 X AmountW $end
+$var parameter 65 Y W $end
+$var reg 18 Z dout [17:0] $end
+$var integer 32 [ k [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10010 Y
+b101 X
+b1001 S
+b100 R
+b1000 M
+b1001 L
+b100 K
+b101 C
+b1000 B
+b100 A
+b11 2
+b1 1
+b0 0
+b10 /
+b1000 .
+$end
+#0
+$dumpvars
+b101 [
+b0 Z
+b0 W
+b0 V
+b100 U
+b0 T
+b0 Q
+b0 P
+b0 O
+b1000 N
+b0 J
+b0 I
+0H
+b0 G
+b0 F
+b0 E
+b0 D
+b0 @
+b0 ?
+b0 >
+b0 =
+b0 <
+b0 ;
+b1000 :
+b0 9
+b0 8
+b0 7
+06
+05
+b0 4
+b0 3
+1-
+0,
+b0 +
+0*
+b0 )
+b0 (
+0'
+0&
+b0 %
+b0 $
+0#
+0"
+b0 !
+$end
+#5000
+1#
+#10000
+0#
+#15000
+1#
+#20000
+1&
+0#
+#25000
+1#
+#30000
+b1001 4
+1'
+b111 %
+b111 )
+b111 8
+b11 $
+b11 (
+b11 7
+0#
+#35000
+1,
+b1 3
+1#
+#40000
+0'
+0#
+#45000
+b111111101 @
+16
+b11 :
+b11 N
+b0 O
+b100 U
+b1 ?
+b1 T
+b11 =
+b11 V
+b11 >
+b11 P
+b101 [
+b111111111101000001 9
+b111111111101000001 Z
+b1001 J
+b1001 Q
+b1001 E
+0-
+b1000 I
+b11 <
+b11 F
+b111111101000001110 W
+b111 !
+b111 +
+b111 ;
+b111 G
+0,
+1*
+b10 3
+1#
+#50000
+0#
+#55000
+15
+1-
+b101 =
+b101 V
+b101 >
+b101 P
+06
+b0 O
+b1000 :
+b1000 N
+b0 ?
+b0 T
+b100 U
+b10 @
+b101 [
+b101010 9
+b101010 Z
+b1 J
+b1 Q
+b1 E
+b101 I
+b111111111 D
+b1111111110100000 !
+b1111111110100000 +
+b1111111110100000 ;
+b10100000 G
+b10101000001 W
+1H
+1#
+#60000
+0#
+#65000
+b111111101 @
+16
+b0 O
+b100 U
+b0 =
+b0 V
+b0 >
+b0 P
+b101 [
+b111111101000101010 9
+b111111101000101010 Z
+05
+b0 J
+b0 Q
+b0 E
+1-
+b0 I
+b0 D
+b10101 !
+b10101 +
+b10101 ;
+b10101 G
+b111111101000101010 W
+0H
+0*
+1"
+b11 3
+1#
+#70000
+0#

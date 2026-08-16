@@ -1,0 +1,7 @@
+
+State Machine - |booth_multiplier|booth_control:u_control|State
+Name State.REPORT State.CALC State.LOAD State.IDLE 
+State.IDLE 0 0 0 0 
+State.LOAD 0 0 1 1 
+State.CALC 0 1 0 1 
+State.REPORT 1 0 0 1 
