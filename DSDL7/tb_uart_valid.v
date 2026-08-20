@@ -2,7 +2,7 @@
 
 module tb_uart_valid;
 
-    localparam integer BIT_TICKS = 4;
+    localparam integer BIT_TICKS = 434;
     localparam integer TIMEOUT_CYCLES = 20 * BIT_TICKS;
     localparam [6:0] TEST_DATA = 7'b1011001;
 
@@ -17,7 +17,7 @@ module tb_uart_valid;
     wire correct_data;
     integer cycles;
 
-    UARTTop #(.BIT_TICKS(BIT_TICKS)) dut (
+    UARTTop dut (
         .clk(clk),
         .rstN(rstN),
         .new_data(new_data),

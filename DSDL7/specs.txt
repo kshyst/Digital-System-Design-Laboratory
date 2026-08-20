@@ -1,0 +1,79 @@
+- Design and simulate a UART transmitter and receiver.
+- Implement the design as synthesizable, vendor-neutral Verilog in `.v` files.
+- Keep the code commented so the interfaces, state machines, counters, and timing decisions are understandable.
+- Accept one seven-bit parallel input word per transmitted frame.
+- Use a single serial transmit line rather than parallel data transfer.
+- Keep the serial line at logic `1` while idle.
+- Transmit exactly ten bits per frame.
+- Transmit the frame in the exact order `Start`, `Parity`, `D0`, `D1`, `D2`, `D3`, `D4`, `D5`, `D6`, `Stop`.
+- Drive the start bit as logic `0`.
+- Place the parity bit immediately after the start bit and before all data bits.
+- Calculate parity as `D0 ^ D1 ^ D2 ^ D3 ^ D4 ^ D5 ^ D6`.
+- Transmit data least-significant bit first, from `D0` through `D6`.
+- Drive the stop bit as logic `1`.
+- Hold every transmitted symbol for exactly `BIT_TICKS` clock cycles.
+- Use 115200 bits per second as the standard transmission rate.
+- Use approximately 434 system-clock cycles per bit for a 50 MHz clock.
+- Make the clocks-per-bit value configurable through `BIT_TICKS` so simulation can use a smaller value.
+- Support the document's `BIT_TICKS = 2` accelerated-simulation example.
+- Default `BIT_TICKS` to `434` when no override is supplied.
+- Implement the sender as a finite-state machine with idle, start, parity, data, and stop phases.
+- Drive `tx = 1` and `busy = 0` while the sender is idle.
+- Accept `send_data` only when `new_data` is active while the sender is idle.
+- Snapshot `send_data` and its parity when a new frame is accepted.
+- Prevent later changes to `send_data` from changing an active frame.
+- Keep `busy` active for the entire start, parity, data, and stop sequence.
+- Deactivate `busy` only after the complete stop-bit interval.
+- Ignore `new_data` assertions while `busy` is active.
+- Do not restart, extend, corrupt, or queue another frame when `new_data` is asserted while busy.
+- Implement the receiver as a finite-state machine that continuously observes `rx`.
+- Remain in the receiver idle state while `rx` is logic `1`.
+- Treat a detected logic `0` as a candidate start bit.
+- Synchronize the asynchronous `rx` input before using it in the receiver state machine.
+- Confirm the candidate start bit near its midpoint so a short low glitch is not accepted as a frame.
+- Sample parity, `D0` through `D6`, and stop in that exact order.
+- Sample subsequent symbols at the same midpoint phase, one full `BIT_TICKS` interval apart.
+- Store the received parity bit separately from the seven received data bits.
+- Store each received data bit at its matching bit index.
+- Validate the received parity by comparing it with the XOR of the seven received data bits.
+- Validate the frame only when both parity is correct and the stop bit equals logic `1`.
+- Assert `rec_new_data` after every complete received frame so completion is observable.
+- Assert `correct_data` only for a completed frame whose parity and stop bit are both valid.
+- Make `rec_new_data` and valid-frame `correct_data` one-clock notifications so consecutive frames are distinguishable.
+- Keep `correct_data` low for parity errors and stop-bit errors.
+- Do not expose an invalid frame as valid received data.
+- Preserve the most recent valid `rec_data` value when a later frame is invalid.
+- Use active-low reset because the required test signal is named `rstN`.
+- Reset the sender to idle-high `tx` with `busy` inactive.
+- Reset receiver data and notification outputs to zero.
+- Provide `UARTSender.v` for the sender and its transmit state machine.
+- Provide `UARTReceiver.v` for reception, data capture, parity checking, and stop-bit checking.
+- Provide `UARTTop.v` for integration.
+- Connect sender `tx` directly to receiver `rx` inside `UARTTop` to form loopback.
+- Pass the same `BIT_TICKS` value to the sender and receiver.
+- Make valid loopback reception reproduce the exact seven-bit transmitted value.
+- Provide `Tester.v` as a complete testbench that generates the clock, applies reset, drives data, and checks outputs.
+- Use a known clock period in every testbench; use the document's suggested 10 ns period.
+- Apply an initial reset before test stimulus.
+- Pulse `new_data` briefly to start transmission.
+- Wait for transmission and reception to finish before judging a result.
+- Compare `rec_data` directly with `send_data` for valid loopback frames.
+- Check both `rec_new_data` and `correct_data` at frame completion.
+- Print important test progress and results with `$display` or `$monitor`-equivalent diagnostics.
+- Keep `clk`, `rstN`, `new_data`, `send_data`, `tx`, `busy`, `rec_data`, `rec_new_data`, and `correct_data` visible for waveform inspection.
+- Include a successful-reception test using `7'b1011001` and require matching `rec_data` with `correct_data = 1`.
+- Include a deliberate parity-error test and require `correct_data = 0`.
+- Inject malformed frames in testbench-only receiver stimulus so production loopback remains direct.
+- Include a deliberate stop-bit-zero test and reject the frame even when its data and parity are correct.
+- Include a consecutive-frame test with at least two different values.
+- Use the document's consecutive examples `7'b1011001` and `7'b0101101` and require two ordered completion notifications.
+- Verify explicitly that a request asserted while the sender is busy cannot affect the active frame.
+- Verify reset and idle output values.
+- Verify notification pulse width and alignment.
+- Verify the exact symbol order and duration on `tx`.
+- Verify false-start rejection and successful recovery.
+- Verify every possible seven-bit value from 0 through 127.
+- Give every self-checking test a finite timeout so a broken design cannot hang simulation.
+- Fail tests on unknown output values rather than treating them as valid binary values.
+- Compile and run each requirement-specific testbench independently.
+- Repeat all mandatory scenarios in the aggregate `Tester.v` regression.
