@@ -73,11 +73,13 @@ module tb_tcam_wildcard;
         if (match_lines !== 4'b0111)
             $fatal(1, "PDF example did not match all three entries: %b", match_lines);
 
+        #10; // Keep the simultaneous matches visible in the waveform.
         search_data = 8'b11111111;
         #1;
         if (match_lines !== 4'b0000)
             $fatal(1, "Compared bits were incorrectly ignored: %b", match_lines);
 
+        #10;
         $display("PASS: ternary wildcard matching");
         $finish;
     end

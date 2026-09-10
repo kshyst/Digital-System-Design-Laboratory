@@ -57,6 +57,7 @@ module tb_tcam_reset;
         if (match_lines !== 2'b01)
             $fatal(1, "Test setup failed to create a valid match: %b", match_lines);
 
+        #10; // Keep the valid entry visible before reset.
         reset = 1'b1;
         @(posedge clk);
         #1 reset = 1'b0;
@@ -64,6 +65,7 @@ module tb_tcam_reset;
         if (match_lines !== 2'b00)
             $fatal(1, "Reset left a TCAM entry valid: %b", match_lines);
 
+        #10;
         $display("PASS: reset invalidates TCAM entries");
         $finish;
     end

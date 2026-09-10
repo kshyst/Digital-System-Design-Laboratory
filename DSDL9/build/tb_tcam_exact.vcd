@@ -1,0 +1,669 @@
+$date
+	Thu Sep 10 15:28:40 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_tcam_exact $end
+$var wire 16 ! match_lines [15:0] $end
+$var parameter 32 " ADDR_WIDTH $end
+$var parameter 32 # DATA_WIDTH $end
+$var parameter 32 $ DEPTH $end
+$var reg 1 % clk $end
+$var reg 1 & reset $end
+$var reg 16 ' search_data [15:0] $end
+$var reg 4 ( write_address [3:0] $end
+$var reg 16 ) write_data [15:0] $end
+$var reg 1 * write_enable $end
+$var reg 16 + write_x_mask [15:0] $end
+$scope module dut $end
+$var wire 1 % clk $end
+$var wire 1 & reset $end
+$var wire 16 , search_data [15:0] $end
+$var wire 4 - write_address [3:0] $end
+$var wire 16 . write_data [15:0] $end
+$var wire 1 * write_enable $end
+$var wire 16 / write_x_mask [15:0] $end
+$var wire 16 0 match_lines [15:0] $end
+$var parameter 32 1 ADDR_WIDTH $end
+$var parameter 32 2 DATA_WIDTH $end
+$var parameter 32 3 DEPTH $end
+$scope begin entries[0] $end
+$var parameter 4 4 ENTRY_ADDRESS $end
+$var parameter 2 5 entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 6 match $end
+$var wire 16 7 mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 8 search_data [15:0] $end
+$var wire 16 9 write_data [15:0] $end
+$var wire 1 : write_enable $end
+$var wire 16 ; write_x_mask [15:0] $end
+$var parameter 32 < DATA_WIDTH $end
+$var reg 16 = stored_data [15:0] $end
+$var reg 16 > stored_x_mask [15:0] $end
+$var reg 1 ? valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[1] $end
+$var parameter 4 @ ENTRY_ADDRESS $end
+$var parameter 2 A entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 B match $end
+$var wire 16 C mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 D search_data [15:0] $end
+$var wire 16 E write_data [15:0] $end
+$var wire 1 F write_enable $end
+$var wire 16 G write_x_mask [15:0] $end
+$var parameter 32 H DATA_WIDTH $end
+$var reg 16 I stored_data [15:0] $end
+$var reg 16 J stored_x_mask [15:0] $end
+$var reg 1 K valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[2] $end
+$var parameter 4 L ENTRY_ADDRESS $end
+$var parameter 3 M entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 N match $end
+$var wire 16 O mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 P search_data [15:0] $end
+$var wire 16 Q write_data [15:0] $end
+$var wire 1 R write_enable $end
+$var wire 16 S write_x_mask [15:0] $end
+$var parameter 32 T DATA_WIDTH $end
+$var reg 16 U stored_data [15:0] $end
+$var reg 16 V stored_x_mask [15:0] $end
+$var reg 1 W valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[3] $end
+$var parameter 4 X ENTRY_ADDRESS $end
+$var parameter 3 Y entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 Z match $end
+$var wire 16 [ mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 \ search_data [15:0] $end
+$var wire 16 ] write_data [15:0] $end
+$var wire 1 ^ write_enable $end
+$var wire 16 _ write_x_mask [15:0] $end
+$var parameter 32 ` DATA_WIDTH $end
+$var reg 16 a stored_data [15:0] $end
+$var reg 16 b stored_x_mask [15:0] $end
+$var reg 1 c valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[4] $end
+$var parameter 4 d ENTRY_ADDRESS $end
+$var parameter 4 e entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 f match $end
+$var wire 16 g mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 h search_data [15:0] $end
+$var wire 16 i write_data [15:0] $end
+$var wire 1 j write_enable $end
+$var wire 16 k write_x_mask [15:0] $end
+$var parameter 32 l DATA_WIDTH $end
+$var reg 16 m stored_data [15:0] $end
+$var reg 16 n stored_x_mask [15:0] $end
+$var reg 1 o valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[5] $end
+$var parameter 4 p ENTRY_ADDRESS $end
+$var parameter 4 q entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 r match $end
+$var wire 16 s mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 t search_data [15:0] $end
+$var wire 16 u write_data [15:0] $end
+$var wire 1 v write_enable $end
+$var wire 16 w write_x_mask [15:0] $end
+$var parameter 32 x DATA_WIDTH $end
+$var reg 16 y stored_data [15:0] $end
+$var reg 16 z stored_x_mask [15:0] $end
+$var reg 1 { valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[6] $end
+$var parameter 4 | ENTRY_ADDRESS $end
+$var parameter 4 } entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 ~ match $end
+$var wire 16 !" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 "" search_data [15:0] $end
+$var wire 16 #" write_data [15:0] $end
+$var wire 1 $" write_enable $end
+$var wire 16 %" write_x_mask [15:0] $end
+$var parameter 32 &" DATA_WIDTH $end
+$var reg 16 '" stored_data [15:0] $end
+$var reg 16 (" stored_x_mask [15:0] $end
+$var reg 1 )" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[7] $end
+$var parameter 4 *" ENTRY_ADDRESS $end
+$var parameter 4 +" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 ," match $end
+$var wire 16 -" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 ." search_data [15:0] $end
+$var wire 16 /" write_data [15:0] $end
+$var wire 1 0" write_enable $end
+$var wire 16 1" write_x_mask [15:0] $end
+$var parameter 32 2" DATA_WIDTH $end
+$var reg 16 3" stored_data [15:0] $end
+$var reg 16 4" stored_x_mask [15:0] $end
+$var reg 1 5" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[8] $end
+$var parameter 4 6" ENTRY_ADDRESS $end
+$var parameter 5 7" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 8" match $end
+$var wire 16 9" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 :" search_data [15:0] $end
+$var wire 16 ;" write_data [15:0] $end
+$var wire 1 <" write_enable $end
+$var wire 16 =" write_x_mask [15:0] $end
+$var parameter 32 >" DATA_WIDTH $end
+$var reg 16 ?" stored_data [15:0] $end
+$var reg 16 @" stored_x_mask [15:0] $end
+$var reg 1 A" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[9] $end
+$var parameter 4 B" ENTRY_ADDRESS $end
+$var parameter 5 C" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 D" match $end
+$var wire 16 E" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 F" search_data [15:0] $end
+$var wire 16 G" write_data [15:0] $end
+$var wire 1 H" write_enable $end
+$var wire 16 I" write_x_mask [15:0] $end
+$var parameter 32 J" DATA_WIDTH $end
+$var reg 16 K" stored_data [15:0] $end
+$var reg 16 L" stored_x_mask [15:0] $end
+$var reg 1 M" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[10] $end
+$var parameter 4 N" ENTRY_ADDRESS $end
+$var parameter 5 O" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 P" match $end
+$var wire 16 Q" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 R" search_data [15:0] $end
+$var wire 16 S" write_data [15:0] $end
+$var wire 1 T" write_enable $end
+$var wire 16 U" write_x_mask [15:0] $end
+$var parameter 32 V" DATA_WIDTH $end
+$var reg 16 W" stored_data [15:0] $end
+$var reg 16 X" stored_x_mask [15:0] $end
+$var reg 1 Y" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[11] $end
+$var parameter 4 Z" ENTRY_ADDRESS $end
+$var parameter 5 [" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 \" match $end
+$var wire 16 ]" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 ^" search_data [15:0] $end
+$var wire 16 _" write_data [15:0] $end
+$var wire 1 `" write_enable $end
+$var wire 16 a" write_x_mask [15:0] $end
+$var parameter 32 b" DATA_WIDTH $end
+$var reg 16 c" stored_data [15:0] $end
+$var reg 16 d" stored_x_mask [15:0] $end
+$var reg 1 e" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[12] $end
+$var parameter 4 f" ENTRY_ADDRESS $end
+$var parameter 5 g" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 h" match $end
+$var wire 16 i" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 j" search_data [15:0] $end
+$var wire 16 k" write_data [15:0] $end
+$var wire 1 l" write_enable $end
+$var wire 16 m" write_x_mask [15:0] $end
+$var parameter 32 n" DATA_WIDTH $end
+$var reg 16 o" stored_data [15:0] $end
+$var reg 16 p" stored_x_mask [15:0] $end
+$var reg 1 q" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[13] $end
+$var parameter 4 r" ENTRY_ADDRESS $end
+$var parameter 5 s" entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 t" match $end
+$var wire 16 u" mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 v" search_data [15:0] $end
+$var wire 16 w" write_data [15:0] $end
+$var wire 1 x" write_enable $end
+$var wire 16 y" write_x_mask [15:0] $end
+$var parameter 32 z" DATA_WIDTH $end
+$var reg 16 {" stored_data [15:0] $end
+$var reg 16 |" stored_x_mask [15:0] $end
+$var reg 1 }" valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[14] $end
+$var parameter 4 ~" ENTRY_ADDRESS $end
+$var parameter 5 !# entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 "# match $end
+$var wire 16 ## mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 $# search_data [15:0] $end
+$var wire 16 %# write_data [15:0] $end
+$var wire 1 &# write_enable $end
+$var wire 16 '# write_x_mask [15:0] $end
+$var parameter 32 (# DATA_WIDTH $end
+$var reg 16 )# stored_data [15:0] $end
+$var reg 16 *# stored_x_mask [15:0] $end
+$var reg 1 +# valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[15] $end
+$var parameter 4 ,# ENTRY_ADDRESS $end
+$var parameter 5 -# entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 .# match $end
+$var wire 16 /# mismatched_bits [15:0] $end
+$var wire 1 & reset $end
+$var wire 16 0# search_data [15:0] $end
+$var wire 16 1# write_data [15:0] $end
+$var wire 1 2# write_enable $end
+$var wire 16 3# write_x_mask [15:0] $end
+$var parameter 32 4# DATA_WIDTH $end
+$var reg 16 5# stored_data [15:0] $end
+$var reg 16 6# stored_x_mask [15:0] $end
+$var reg 1 7# valid $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b10000 4#
+b1111 -#
+b1111 ,#
+b10000 (#
+b1110 !#
+b1110 ~"
+b10000 z"
+b1101 s"
+b1101 r"
+b10000 n"
+b1100 g"
+b1100 f"
+b10000 b"
+b1011 ["
+b1011 Z"
+b10000 V"
+b1010 O"
+b1010 N"
+b10000 J"
+b1001 C"
+b1001 B"
+b10000 >"
+b1000 7"
+b1000 6"
+b10000 2"
+b111 +"
+b111 *"
+b10000 &"
+b110 }
+b110 |
+b10000 x
+b101 q
+b101 p
+b10000 l
+b100 e
+b100 d
+b10000 `
+b11 Y
+b11 X
+b10000 T
+b10 M
+b10 L
+b10000 H
+b1 A
+b1 @
+b10000 <
+b0 5
+b0 4
+b10000 3
+b10000 2
+b100 1
+b10000 $
+b10000 #
+b100 "
+$end
+#0
+$dumpvars
+x7#
+bx 6#
+bx 5#
+b0 3#
+02#
+b0 1#
+b0 0#
+bx /#
+x.#
+x+#
+bx *#
+bx )#
+b0 '#
+0&#
+b0 %#
+b0 $#
+bx ##
+x"#
+x}"
+bx |"
+bx {"
+b0 y"
+0x"
+b0 w"
+b0 v"
+bx u"
+xt"
+xq"
+bx p"
+bx o"
+b0 m"
+0l"
+b0 k"
+b0 j"
+bx i"
+xh"
+xe"
+bx d"
+bx c"
+b0 a"
+0`"
+b0 _"
+b0 ^"
+bx ]"
+x\"
+xY"
+bx X"
+bx W"
+b0 U"
+0T"
+b0 S"
+b0 R"
+bx Q"
+xP"
+xM"
+bx L"
+bx K"
+b0 I"
+0H"
+b0 G"
+b0 F"
+bx E"
+xD"
+xA"
+bx @"
+bx ?"
+b0 ="
+0<"
+b0 ;"
+b0 :"
+bx 9"
+x8"
+x5"
+bx 4"
+bx 3"
+b0 1"
+00"
+b0 /"
+b0 ."
+bx -"
+x,"
+x)"
+bx ("
+bx '"
+b0 %"
+0$"
+b0 #"
+b0 ""
+bx !"
+x~
+x{
+bx z
+bx y
+b0 w
+0v
+b0 u
+b0 t
+bx s
+xr
+xo
+bx n
+bx m
+b0 k
+0j
+b0 i
+b0 h
+bx g
+xf
+xc
+bx b
+bx a
+b0 _
+0^
+b0 ]
+b0 \
+bx [
+xZ
+xW
+bx V
+bx U
+b0 S
+0R
+b0 Q
+b0 P
+bx O
+xN
+xK
+bx J
+bx I
+b0 G
+0F
+b0 E
+b0 D
+bx C
+xB
+x?
+bx >
+bx =
+b0 ;
+0:
+b0 9
+b0 8
+bx 7
+x6
+bx 0
+b0 /
+b0 .
+b0 -
+b0 ,
+b0 +
+0*
+b0 )
+b0 (
+b0 '
+1&
+0%
+bx !
+$end
+#5000
+06
+0B
+0N
+0Z
+0f
+0r
+0~
+0,"
+08"
+0D"
+0P"
+0\"
+0h"
+0t"
+0"#
+b0 !
+b0 0
+0.#
+0?
+0K
+0W
+0c
+0o
+0{
+0)"
+05"
+0A"
+0M"
+0Y"
+0e"
+0q"
+0}"
+0+#
+07#
+1%
+#6000
+12#
+1*
+b1010010101011010 )
+b1010010101011010 .
+b1010010101011010 9
+b1010010101011010 E
+b1010010101011010 Q
+b1010010101011010 ]
+b1010010101011010 i
+b1010010101011010 u
+b1010010101011010 #"
+b1010010101011010 /"
+b1010010101011010 ;"
+b1010010101011010 G"
+b1010010101011010 S"
+b1010010101011010 _"
+b1010010101011010 k"
+b1010010101011010 w"
+b1010010101011010 %#
+b1010010101011010 1#
+b1111 (
+b1111 -
+0&
+#10000
+0%
+#15000
+b1010010101011010 /#
+b0 !
+b0 0
+0.#
+17#
+b0 6#
+b1010010101011010 5#
+1%
+#16000
+b1000000000000000 !
+b1000000000000000 0
+1.#
+b0 /#
+02#
+b1010010101011010 '
+b1010010101011010 ,
+b1010010101011010 8
+b1010010101011010 D
+b1010010101011010 P
+b1010010101011010 \
+b1010010101011010 h
+b1010010101011010 t
+b1010010101011010 ""
+b1010010101011010 ."
+b1010010101011010 :"
+b1010010101011010 F"
+b1010010101011010 R"
+b1010010101011010 ^"
+b1010010101011010 j"
+b1010010101011010 v"
+b1010010101011010 $#
+b1010010101011010 0#
+0*
+#20000
+0%
+#25000
+1%
+#27000
+b0 !
+b0 0
+0.#
+b1 /#
+b1010010101011011 '
+b1010010101011011 ,
+b1010010101011011 8
+b1010010101011011 D
+b1010010101011011 P
+b1010010101011011 \
+b1010010101011011 h
+b1010010101011011 t
+b1010010101011011 ""
+b1010010101011011 ."
+b1010010101011011 :"
+b1010010101011011 F"
+b1010010101011011 R"
+b1010010101011011 ^"
+b1010010101011011 j"
+b1010010101011011 v"
+b1010010101011011 $#
+b1010010101011011 0#
+#30000
+0%
+#35000
+1%
+#38000
