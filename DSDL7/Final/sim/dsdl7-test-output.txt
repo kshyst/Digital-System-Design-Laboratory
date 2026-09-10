@@ -1,0 +1,53 @@
+=== tb_uart_frame_format: compile exit 0 ===
+=== tb_uart_frame_format: run exit 0 ===
+PASS: sender frame format and 434-cycle timing
+DSDL7/tb_uart_frame_format.v:70: $finish called at 43440000 (1ps)
+=== tb_uart_valid: compile exit 0 ===
+=== tb_uart_valid: run exit 0 ===
+PASS: valid UART loopback
+DSDL7/tb_uart_valid.v:65: $finish called at 41310000 (1ps)
+=== tb_uart_parity_error: compile exit 0 ===
+=== tb_uart_parity_error: run exit 0 ===
+PASS: parity errors are rejected
+DSDL7/tb_uart_parity_error.v:93: $finish called at 900000 (1ps)
+=== tb_uart_stop_error: compile exit 0 ===
+=== tb_uart_stop_error: run exit 0 ===
+PASS: stop-bit errors are rejected
+DSDL7/tb_uart_stop_error.v:93: $finish called at 900000 (1ps)
+=== tb_uart_back_to_back: compile exit 0 ===
+=== tb_uart_back_to_back: run exit 0 ===
+PASS: consecutive UART frames
+DSDL7/tb_uart_back_to_back.v:102: $finish called at 870000 (1ps)
+=== tb_uart_busy_ignore: compile exit 0 ===
+=== tb_uart_busy_ignore: run exit 0 ===
+PASS: busy requests are ignored
+DSDL7/tb_uart_busy_ignore.v:89: $finish called at 940000 (1ps)
+=== tb_uart_reset_idle: compile exit 0 ===
+=== tb_uart_reset_idle: run exit 0 ===
+PASS: reset and idle behavior
+DSDL7/tb_uart_reset_idle.v:57: $finish called at 40000 (1ps)
+=== tb_uart_output_pulses: compile exit 0 ===
+=== tb_uart_output_pulses: run exit 0 ===
+PASS: receiver completion pulses are one cycle
+DSDL7/tb_uart_output_pulses.v:112: $finish called at 890000 (1ps)
+=== tb_uart_all_values: compile exit 0 ===
+=== tb_uart_all_values: run exit 0 ===
+PASS: all 128 UART values
+DSDL7/tb_uart_all_values.v:67: $finish called at 32020000 (1ps)
+=== tb_uart_false_start: compile exit 0 ===
+=== tb_uart_false_start: run exit 0 ===
+PASS: false starts are rejected
+DSDL7/tb_uart_false_start.v:98: $finish called at 610000 (1ps)
+=== Tester: compile exit 0 ===
+=== Tester: run exit 0 ===
+PASS: reset and idle outputs
+TEST: exact valid frame and symbol timing
+TEST: request asserted while busy
+TEST: required consecutive frames
+TEST: exhaustive seven-bit loopback
+TEST: valid raw receiver frame
+TEST: required parity error
+TEST: required stop-bit error
+TEST: false-start rejection and recovery
+PASS: complete DSDL7 UART regression
+DSDL7/Tester.v:310: $finish called at 32960000 (1ps)

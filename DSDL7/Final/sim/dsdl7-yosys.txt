@@ -1,0 +1,494 @@
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2020  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.33 (git sha1 2584903a060)
+
+
+-- Running command `read_verilog DSDL7/UARTSender.v DSDL7/UARTReceiver.v DSDL7/UARTTop.v; hierarchy -check -top UARTTop; proc; opt; check -assert; stat' --
+
+1. Executing Verilog-2005 frontend: DSDL7/UARTSender.v
+Parsing Verilog input from `DSDL7/UARTSender.v' to AST representation.
+Generating RTLIL representation for module `\UARTSender'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: DSDL7/UARTReceiver.v
+Parsing Verilog input from `DSDL7/UARTReceiver.v' to AST representation.
+Generating RTLIL representation for module `\UARTReceiver'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: DSDL7/UARTTop.v
+Parsing Verilog input from `DSDL7/UARTTop.v' to AST representation.
+Generating RTLIL representation for module `\UARTTop'.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+4.1. Analyzing design hierarchy..
+Top module:  \UARTTop
+Used module:     \UARTReceiver
+Used module:     \UARTSender
+Parameter \BIT_TICKS = 434
+
+4.2. Executing AST frontend in derive mode using pre-parsed AST for module `\UARTReceiver'.
+Parameter \BIT_TICKS = 434
+Generating RTLIL representation for module `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010'.
+Parameter \BIT_TICKS = 434
+
+4.3. Executing AST frontend in derive mode using pre-parsed AST for module `\UARTSender'.
+Parameter \BIT_TICKS = 434
+Generating RTLIL representation for module `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010'.
+
+4.4. Analyzing design hierarchy..
+Top module:  \UARTTop
+Used module:     $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010
+Used module:     $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010
+
+4.5. Analyzing design hierarchy..
+Top module:  \UARTTop
+Used module:     $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010
+Used module:     $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010
+Removing unused module `\UARTReceiver'.
+Removing unused module `\UARTSender'.
+Removed 2 unused modules.
+
+5. Executing PROC pass (convert processes to netlists).
+
+5.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+5.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 7 switch rules as full_case in process $proc$DSDL7/UARTSender.v:50$132 in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+Marked 7 switch rules as full_case in process $proc$DSDL7/UARTReceiver.v:60$80 in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Marked 1 switch rules as full_case in process $proc$DSDL7/UARTReceiver.v:50$77 in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Removed a total of 0 dead cases.
+
+5.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 6 redundant assignments.
+Promoted 5 assignments to connections.
+
+5.4. Executing PROC_INIT pass (extract init attributes).
+
+5.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rstN in `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+Found async reset \rstN in `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+Found async reset \rstN in `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:50$77'.
+
+5.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~15 debug messages>
+
+5.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+     1/5: $0\tick_count[8:0]
+     2/5: $0\parity_latch[0:0]
+     3/5: $0\data_latch[6:0]
+     4/5: $0\bit_index[2:0]
+     5/5: $0\state[2:0]
+Creating decoders for process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+     1/19: $3$lookahead\data_latch$79[6:0]$104
+     2/19: $3$bitselwrite$data$DSDL7/UARTReceiver.v:106$75[6:0]$102
+     3/19: $3$bitselwrite$mask$DSDL7/UARTReceiver.v:106$74[6:0]$101
+     4/19: $3$bitselwrite$sel$DSDL7/UARTReceiver.v:106$76[2:0]$103
+     5/19: $0\tick_count[8:0]
+     6/19: $2$lookahead\data_latch$79[6:0]$93
+     7/19: $2$bitselwrite$sel$DSDL7/UARTReceiver.v:106$76[2:0]$92
+     8/19: $2$bitselwrite$data$DSDL7/UARTReceiver.v:106$75[6:0]$91
+     9/19: $2$bitselwrite$mask$DSDL7/UARTReceiver.v:106$74[6:0]$90
+    10/19: $1$lookahead\data_latch$79[6:0]$89
+    11/19: $1$bitselwrite$sel$DSDL7/UARTReceiver.v:106$76[2:0]$88
+    12/19: $1$bitselwrite$data$DSDL7/UARTReceiver.v:106$75[6:0]$87
+    13/19: $1$bitselwrite$mask$DSDL7/UARTReceiver.v:106$74[6:0]$86
+    14/19: $0\correct_data[0:0]
+    15/19: $0\rec_new_data[0:0]
+    16/19: $0\rec_data[6:0]
+    17/19: $0\parity_latch[0:0]
+    18/19: $0\bit_index[2:0]
+    19/19: $0\state[2:0]
+Creating decoders for process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:50$77'.
+     1/2: $0\rx_sync[0:0]
+     2/2: $0\rx_meta[0:0]
+
+5.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+5.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.\state' using process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+  created $adff cell `$procdff$351' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.\tick_count' using process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+  created $adff cell `$procdff$352' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.\bit_index' using process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+  created $adff cell `$procdff$353' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.\data_latch' using process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+  created $adff cell `$procdff$354' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.\parity_latch' using process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+  created $adff cell `$procdff$355' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\state' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$356' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\tick_count' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$357' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\bit_index' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$358' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\data_latch' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$359' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\parity_latch' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$360' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\rec_data' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$361' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\rec_new_data' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$362' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\correct_data' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$363' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$bitselwrite$mask$DSDL7/UARTReceiver.v:106$74' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$364' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$bitselwrite$data$DSDL7/UARTReceiver.v:106$75' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$365' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$bitselwrite$sel$DSDL7/UARTReceiver.v:106$76' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$366' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$lookahead\data_latch$79' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+  created $adff cell `$procdff$367' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\rx_meta' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:50$77'.
+  created $adff cell `$procdff$368' with positive edge clock and negative level reset.
+Creating register for signal `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.\rx_sync' using process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:50$77'.
+  created $adff cell `$procdff$369' with positive edge clock and negative level reset.
+
+5.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+5.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 7 empty switches in `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+Removing empty process `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTSender.v:50$132'.
+Found and cleaned up 8 empty switches in `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+Removing empty process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:60$80'.
+Removing empty process `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.$proc$DSDL7/UARTReceiver.v:50$77'.
+Cleaned up 15 empty switches.
+
+5.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module UARTTop.
+Optimizing module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+<suppressed ~4 debug messages>
+Optimizing module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+<suppressed ~3 debug messages>
+
+6. Executing OPT pass (performing simple optimizations).
+
+6.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module UARTTop.
+Optimizing module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+Optimizing module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+<suppressed ~2 debug messages>
+
+6.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\UARTTop'.
+Finding identical cells in module `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010'.
+<suppressed ~57 debug messages>
+Finding identical cells in module `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010'.
+<suppressed ~90 debug messages>
+Removed a total of 49 cells.
+
+6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \UARTTop..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$280.
+    dead port 2/2 on $mux $procmux$280.
+    dead port 1/2 on $mux $procmux$276.
+    dead port 2/2 on $mux $procmux$276.
+    dead port 1/2 on $mux $procmux$272.
+    dead port 2/2 on $mux $procmux$272.
+    dead port 1/2 on $mux $procmux$246.
+    dead port 2/2 on $mux $procmux$246.
+    dead port 1/2 on $mux $procmux$244.
+    dead port 2/2 on $mux $procmux$244.
+    dead port 1/2 on $mux $procmux$239.
+    dead port 2/2 on $mux $procmux$239.
+    dead port 1/2 on $mux $procmux$237.
+    dead port 2/2 on $mux $procmux$237.
+    dead port 1/2 on $mux $procmux$232.
+    dead port 2/2 on $mux $procmux$232.
+    dead port 1/2 on $mux $procmux$230.
+    dead port 2/2 on $mux $procmux$230.
+    dead port 2/2 on $mux $procmux$225.
+Removed 19 multiplexer ports.
+<suppressed ~14 debug messages>
+
+6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \UARTTop.
+  Optimizing cells in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+    New ctrl vector for $pmux cell $procmux$182: { $procmux$212_CMP $procmux$208_CMP $auto$opt_reduce.cc:134:opt_pmux$371 }
+  Optimizing cells in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+  Optimizing cells in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+    New ctrl vector for $pmux cell $procmux$313: { $procmux$343_CMP $procmux$339_CMP $auto$opt_reduce.cc:134:opt_pmux$373 }
+  Optimizing cells in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Performed a total of 2 changes.
+
+6.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\UARTTop'.
+Finding identical cells in module `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010'.
+<suppressed ~9 debug messages>
+Finding identical cells in module `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010'.
+<suppressed ~6 debug messages>
+Removed a total of 5 cells.
+
+6.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $procdff$354 ($adff) from module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010 (D = \send_data, Q = \data_latch).
+Adding EN signal on $procdff$355 ($adff) from module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010 (D = $reduce_xor$DSDL7/UARTSender.v:64$134_Y, Q = \parity_latch).
+Adding EN signal on $procdff$353 ($adff) from module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010 (D = $procmux$182_Y, Q = \bit_index).
+Adding EN signal on $procdff$351 ($adff) from module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010 (D = $procmux$200_Y, Q = \state).
+Adding EN signal on $procdff$361 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 (D = \data_latch, Q = \rec_data).
+Adding EN signal on $procdff$356 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 (D = $procmux$331_Y, Q = \state).
+Adding EN signal on $procdff$358 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 (D = $procmux$313_Y, Q = \bit_index).
+Adding EN signal on $procdff$359 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 (D = $3$lookahead\data_latch$79[6:0]$104, Q = \data_latch).
+Adding EN signal on $procdff$360 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 (D = \rx_sync, Q = \parity_latch).
+Setting constant 1-bit at position 0 on $procdff$366 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 1 on $procdff$366 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 2 on $procdff$366 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 0 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 1 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 2 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 3 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 4 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 5 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Setting constant 1-bit at position 6 on $procdff$367 ($adff) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+
+6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \UARTTop..
+Finding unused cells or wires in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010..
+Finding unused cells or wires in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010..
+Removed 13 unused cells and 152 unused wires.
+<suppressed ~16 debug messages>
+
+6.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+<suppressed ~1 debug messages>
+Optimizing module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+<suppressed ~1 debug messages>
+Optimizing module UARTTop.
+
+6.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \UARTTop..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+6.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+    New ctrl vector for $pmux cell $procmux$252: { $procmux$265_CMP $auto$opt_reduce.cc:134:opt_pmux$440 }
+  Optimizing cells in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+  Optimizing cells in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+    New ctrl vector for $pmux cell $procmux$149: $auto$opt_reduce.cc:134:opt_pmux$442
+  Optimizing cells in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+  Optimizing cells in module \UARTTop.
+Performed a total of 2 changes.
+
+6.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010'.
+<suppressed ~9 debug messages>
+Finding identical cells in module `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010'.
+<suppressed ~12 debug messages>
+Finding identical cells in module `\UARTTop'.
+Removed a total of 7 cells.
+
+6.13. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $auto$ff.cc:266:slice$435 ($adffe) from module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 (D = $or$DSDL7/UARTReceiver.v:0$114_Y, Q = \data_latch).
+
+6.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010..
+Finding unused cells or wires in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010..
+Finding unused cells or wires in module \UARTTop..
+Removed 1 unused cells and 8 unused wires.
+<suppressed ~3 debug messages>
+
+6.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Optimizing module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+Optimizing module UARTTop.
+
+6.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+6.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \UARTTop..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~11 debug messages>
+
+6.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+  Optimizing cells in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+  Optimizing cells in module \UARTTop.
+Performed a total of 0 changes.
+
+6.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010'.
+Finding identical cells in module `$paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010'.
+Finding identical cells in module `\UARTTop'.
+Removed a total of 0 cells.
+
+6.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+6.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010..
+Finding unused cells or wires in module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010..
+Finding unused cells or wires in module \UARTTop..
+
+6.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010.
+Optimizing module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010.
+Optimizing module UARTTop.
+
+6.23. Finished OPT passes. (There is nothing left to do.)
+
+7. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010...
+Checking module $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010...
+Checking module UARTTop...
+Found and reported 0 problems.
+
+8. Printing statistics.
+
+=== $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010 ===
+
+   Number of wires:                 66
+   Number of wire bits:            207
+   Number of public wires:          13
+   Number of public wire bits:      37
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 63
+     $add                            2
+     $adff                           5
+     $adffe                          5
+     $and                            1
+     $eq                             8
+     $logic_and                      1
+     $logic_not                      1
+     $mux                           16
+     $ne                             7
+     $neg                            1
+     $not                            2
+     $or                             1
+     $pmux                           3
+     $reduce_and                     5
+     $reduce_or                      2
+     $reduce_xor                     1
+     $shift                          2
+
+=== $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010 ===
+
+   Number of wires:                 49
+   Number of wire bits:            119
+   Number of public wires:          11
+   Number of public wire bits:      35
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 45
+     $add                            2
+     $adff                           1
+     $adffe                          4
+     $eq                             6
+     $logic_not                      1
+     $mux                           13
+     $ne                             7
+     $not                            1
+     $pmux                           2
+     $reduce_and                     3
+     $reduce_bool                    1
+     $reduce_or                      2
+     $reduce_xor                     1
+     $shiftx                         1
+
+=== UARTTop ===
+
+   Number of wires:                  9
+   Number of wire bits:             21
+   Number of public wires:           9
+   Number of public wire bits:      21
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  2
+     $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010      1
+     $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010      1
+
+=== design hierarchy ===
+
+   UARTTop                           1
+     $paramod\UARTReceiver\BIT_TICKS=s32'00000000000000000000000110110010      1
+     $paramod\UARTSender\BIT_TICKS=s32'00000000000000000000000110110010      1
+
+   Number of wires:                124
+   Number of wire bits:            347
+   Number of public wires:          33
+   Number of public wire bits:      93
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                108
+     $add                            4
+     $adff                           6
+     $adffe                          9
+     $and                            1
+     $eq                            14
+     $logic_and                      1
+     $logic_not                      2
+     $mux                           29
+     $ne                            14
+     $neg                            1
+     $not                            3
+     $or                             1
+     $pmux                           5
+     $reduce_and                     8
+     $reduce_bool                    1
+     $reduce_or                      4
+     $reduce_xor                     2
+     $shift                          2
+     $shiftx                         1
+
+End of script. Logfile hash: 84993988d8, CPU: user 0.09s system 0.00s, MEM: 11.00 MB peak
+Yosys 0.33 (git sha1 2584903a060)
+Time spent: 29% 5x opt_expr (0 sec), 14% 4x opt_merge (0 sec), ...
