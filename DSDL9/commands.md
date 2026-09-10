@@ -1,43 +1,76 @@
-# اجرای تست‌های DSDL9 و مشاهده در GTKWave
+# اجرای تست‌های DSDL9 و مشاهده موج‌ها در GTKWave
 
-این دستورها باید از ریشه مخزن `Digital-System-Design-Laboratory` اجرا شوند.
+> تمام دستورهای این فایل باید داخل پوشه `DSDL9` اجرا شوند.
+>
+> دستور `iverilog` فقط فایل اجرایی `.vvp` را می‌سازد. فایل `.vcd` هنگام اجرای دستور `vvp` ساخته می‌شود، نه هنگام کامپایل.
 
-سه تست‌بنچ طوری تنظیم شده‌اند که هنگام اجرا فایل VCD متناظر خود را تولید کنند. خروجی‌های کامپایل و موج‌ها در `DSDL9/build/` قرار می‌گیرند.
+## ۱. ورود به پوشه و بررسی ابزارها
 
-## تست تطبیق دقیق
-
-### کامپایل و اجرا
-
-در ترمینال و از ریشه مخزن اجرا کنید:
+این بلوک را از ریشه مخزن `Digital-System-Design-Laboratory` اجرا کنید:
 
 ```bash
-mkdir -p DSDL9/build
-iverilog -g2012 -Wall \
-  -s tb_tcam_exact \
-  -o DSDL9/build/tb_tcam_exact.vvp \
-  DSDL9/tcam_entry.v \
-  DSDL9/tcam.v \
-  DSDL9/tb_tcam_exact.v
-(cd DSDL9/build && vvp ./tb_tcam_exact.vvp)
+cd DSDL9
+mkdir -p build
+command -v iverilog
+command -v vvp
+command -v gtkwave
 ```
 
-خروجی موفق باید شامل این پیام باشد:
+سه مسیر ابزار باید نمایش داده شوند. در Ubuntu، اگر ابزاری نصب نیست، اجرا کنید:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y iverilog gtkwave
+```
+
+تست‌بنچ‌ها باید شامل دستورهای `$dumpfile` و `$dumpvars` باشند. از داخل `DSDL9` بررسی کنید:
+
+```bash
+grep -n '\$dumpfile\|\$dumpvars' tb_tcam_exact.v tb_tcam_reset.v tb_tcam_wildcard.v
+```
+
+باید برای هر تست‌بنچ هر دو دستور دیده شوند. اگر خروجی خالی است، از نسخه قدیمی تست‌بنچ‌ها استفاده می‌کنید و باید فایل‌های جدید موجود در ZIP را جایگزین کنید.
+
+---
+
+# تست اول: تطبیق دقیق
+
+## کامپایل، اجرا و بررسی ساخت VCD
+
+این بلوک را داخل پوشه `DSDL9` اجرا کنید:
+
+```bash
+mkdir -p build
+rm -f build/tb_tcam_exact.vvp build/tb_tcam_exact.vcd
+iverilog -g2012 -Wall \
+  -s tb_tcam_exact \
+  -o build/tb_tcam_exact.vvp \
+  tcam_entry.v \
+  tcam.v \
+  tb_tcam_exact.v
+vvp build/tb_tcam_exact.vvp
+test -s build/tb_tcam_exact.vcd
+printf 'VCD created: %s\n' "$PWD/build/tb_tcam_exact.vcd"
+```
+
+خروجی موفق باید شامل هر دو پیام باشد:
 
 ```text
 PASS: exact TCAM matching
+VCD created: .../DSDL9/build/tb_tcam_exact.vcd
 ```
 
-### بازکردن موج
+## بازکردن GTKWave
 
-از ریشه مخزن اجرا کنید:
+داخل پوشه `DSDL9` اجرا کنید:
 
 ```bash
-gtkwave DSDL9/build/tb_tcam_exact.vcd
+gtkwave "$PWD/build/tb_tcam_exact.vcd"
 ```
 
-### سیگنال‌هایی که باید به Wave اضافه شوند
+## سیگنال‌هایی که باید اضافه شوند
 
-در پنل `SST`، ماژول `tb_tcam_exact` را باز کنید و این سیگنال‌ها را با `Append` یا `Insert` اضافه کنید:
+در پنل `SST`، ماژول `tb_tcam_exact` را باز و این سیگنال‌ها را `Append` کنید:
 
 ```text
 clk
@@ -50,15 +83,13 @@ search_data
 match_lines
 ```
 
-برای بررسی داخلی ورودی شماره ۱۵، مسیر زیر را نیز باز کنید:
+برای مشاهده ورودی شماره ۱۵، این مسیر را باز کنید:
 
 ```text
-dut
-entries[15]
-entry
+tb_tcam_exact > dut > entries[15] > entry
 ```
 
-و این سیگنال‌ها را اضافه کنید:
+این سیگنال‌ها را نیز اضافه کنید:
 
 ```text
 valid
@@ -68,88 +99,82 @@ mismatched_bits
 match
 ```
 
-برای باس‌های زیر، با کلیک راست گزینه `Data Format > Hex` را انتخاب کنید:
+باس‌ها را با کلیک راست روی `Data Format > Hex` قرار دهید.
 
-```text
-write_address
-write_data
-write_x_mask
-search_data
-match_lines
-stored_data
-stored_x_mask
-mismatched_bits
-```
+## مقادیر مورد انتظار
 
-### مقادیر مورد انتظار در Wave
+هنگام نوشتن:
 
 ```text
 write_address = F
-write_data    = A55A
-write_x_mask  = 0000
+write_data = A55A
+write_x_mask = 0000
+write_enable = 1
 ```
 
-پس از لبه ساعت نوشتن:
+پس از لبه بالارونده ساعت:
 
 ```text
-valid       = 1
+valid = 1
 stored_data = A55A
 ```
 
-برای جست‌وجوی مقدار برابر:
+هنگام جست‌وجوی مقدار برابر:
 
 ```text
 search_data = A55A
 match_lines = 8000
-match       = 1
+match = 1
 ```
 
-تنها بیت ۱۵ خروجی `match_lines` باید یک باشد.
-
-برای مقدار متفاوت:
+هنگام جست‌وجوی مقدار متفاوت:
 
 ```text
 search_data = A55B
 match_lines = 0000
-match       = 0
+match = 0
 ```
 
 ---
 
-## تست Reset
+# تست دوم: Reset
 
-### کامپایل و اجرا
+## کامپایل، اجرا و بررسی ساخت VCD
 
-در ترمینال و از ریشه مخزن اجرا کنید:
+این بلوک را داخل پوشه `DSDL9` اجرا کنید:
 
 ```bash
-mkdir -p DSDL9/build
+mkdir -p build
+rm -f build/tb_tcam_reset.vvp build/tb_tcam_reset.vcd
 iverilog -g2012 -Wall \
   -s tb_tcam_reset \
-  -o DSDL9/build/tb_tcam_reset.vvp \
-  DSDL9/tcam_entry.v \
-  DSDL9/tcam.v \
-  DSDL9/tb_tcam_reset.v
-(cd DSDL9/build && vvp ./tb_tcam_reset.vvp)
+  -o build/tb_tcam_reset.vvp \
+  tcam_entry.v \
+  tcam.v \
+  tb_tcam_reset.v
+vvp build/tb_tcam_reset.vvp
+test -s build/tb_tcam_reset.vcd
+printf 'VCD created: %s\n' "$PWD/build/tb_tcam_reset.vcd"
 ```
 
-خروجی موفق باید شامل این پیام باشد:
+خروجی موفق:
 
 ```text
 PASS: reset invalidates TCAM entries
+VCD created: .../DSDL9/build/tb_tcam_reset.vcd
 ```
 
-### بازکردن موج
+## بازکردن GTKWave
 
-از ریشه مخزن اجرا کنید:
+داخل پوشه `DSDL9` اجرا کنید:
 
 ```bash
-gtkwave DSDL9/build/tb_tcam_reset.vcd
+gtkwave "$PWD/build/tb_tcam_reset.vcd"
 ```
 
-### سیگنال‌هایی که باید به Wave اضافه شوند
+## سیگنال‌هایی که باید اضافه شوند
 
-از ماژول `tb_tcam_reset` این سیگنال‌ها را اضافه کنید:
+از `tb_tcam_reset` اضافه کنید:
 
 ```text
 clk
@@ -162,15 +187,13 @@ search_data
 match_lines
 ```
 
-برای دیدن اثر Reset روی ورودی صفر، این مسیر را باز کنید:
+سپس این مسیر را باز کنید:
 
 ```text
-dut
-entries[0]
-entry
+tb_tcam_reset > dut > entries[0] > entry
 ```
 
-و این سیگنال‌ها را اضافه کنید:
+این سیگنال‌ها را اضافه کنید:
 
 ```text
 valid
@@ -179,75 +202,72 @@ stored_x_mask
 match
 ```
 
-باس‌های `write_address`، `write_data`، `write_x_mask`، `search_data`، `match_lines`، `stored_data` و `stored_x_mask` را روی نمایش `Hex` قرار دهید.
+باس‌ها را روی `Data Format > Hex` قرار دهید.
 
-### مقادیر مورد انتظار در Wave
+## مقادیر مورد انتظار
 
-در زمان نوشتن ورودی صفر:
+پس از نوشتن ورودی صفر:
 
 ```text
 write_address = 0
-write_data    = A
-write_x_mask  = 0
-search_data   = A
-write_enable  = 1
-```
-
-بعد از لبه ساعت نوشتن:
-
-```text
-valid       = 1
-match       = 1
+write_data = A
+write_x_mask = 0
+search_data = A
+valid = 1
 match_lines = 1
 ```
 
-هنگام فعال‌شدن دوباره Reset:
+پس از فعال‌شدن مجدد Reset و رسیدن لبه ساعت:
 
 ```text
-reset       = 1
-valid       = 0
-match       = 0
+reset = 1
+valid = 0
+match = 0
 match_lines = 0
 ```
 
-داده ذخیره‌شده ممکن است پس از Reset همچنان مقدار قبلی را نگه دارد، اما چون `valid=0` است نباید هیچ تطبیقی تولید شود.
+ممکن است `stored_data` همچنان مقدار `A` را نگه دارد، اما چون `valid=0` است هیچ تطبیقی تولید نمی‌شود.
 
 ---
 
-## تست Wildcard یا تطبیق سه‌حالته
+# تست سوم: Wildcard
 
-### کامپایل و اجرا
+## کامپایل، اجرا و بررسی ساخت VCD
 
-در ترمینال و از ریشه مخزن اجرا کنید:
+این بلوک را داخل پوشه `DSDL9` اجرا کنید:
 
 ```bash
-mkdir -p DSDL9/build
+mkdir -p build
+rm -f build/tb_tcam_wildcard.vvp build/tb_tcam_wildcard.vcd
 iverilog -g2012 -Wall \
   -s tb_tcam_wildcard \
-  -o DSDL9/build/tb_tcam_wildcard.vvp \
-  DSDL9/tcam_entry.v \
-  DSDL9/tcam.v \
-  DSDL9/tb_tcam_wildcard.v
-(cd DSDL9/build && vvp ./tb_tcam_wildcard.vvp)
+  -o build/tb_tcam_wildcard.vvp \
+  tcam_entry.v \
+  tcam.v \
+  tb_tcam_wildcard.v
+vvp build/tb_tcam_wildcard.vvp
+test -s build/tb_tcam_wildcard.vcd
+printf 'VCD created: %s\n' "$PWD/build/tb_tcam_wildcard.vcd"
 ```
 
-خروجی موفق باید شامل این پیام باشد:
+خروجی موفق:
 
 ```text
 PASS: ternary wildcard matching
+VCD created: .../DSDL9/build/tb_tcam_wildcard.vcd
 ```
 
-### بازکردن موج
+## بازکردن GTKWave
 
-از ریشه مخزن اجرا کنید:
+داخل پوشه `DSDL9` اجرا کنید:
 
 ```bash
-gtkwave DSDL9/build/tb_tcam_wildcard.vcd
+gtkwave "$PWD/build/tb_tcam_wildcard.vcd"
 ```
 
-### سیگنال‌هایی که باید به Wave اضافه شوند
+## سیگنال‌هایی که باید اضافه شوند
 
-از ماژول `tb_tcam_wildcard` این سیگنال‌ها را اضافه کنید:
+از `tb_tcam_wildcard` اضافه کنید:
 
 ```text
 clk
@@ -260,15 +280,15 @@ search_data
 match_lines
 ```
 
-برای دیدن محتوای سه ورودی نوشته‌شده، مسیرهای زیر را باز کنید:
+برای دیدن سه ورودی نوشته‌شده، مسیرهای زیر را باز کنید:
 
 ```text
-dut > entries[0] > entry
-dut > entries[1] > entry
-dut > entries[2] > entry
+tb_tcam_wildcard > dut > entries[0] > entry
+tb_tcam_wildcard > dut > entries[1] > entry
+tb_tcam_wildcard > dut > entries[2] > entry
 ```
 
-از هر ورودی این سیگنال‌ها را اضافه کنید:
+از هر ورودی اضافه کنید:
 
 ```text
 valid
@@ -278,47 +298,32 @@ mismatched_bits
 match
 ```
 
-باس‌ها را روی `Data Format > Hex` یا برای مشاهده الگوی X روی `Data Format > Binary` قرار دهید.
+`stored_data`، `write_data` و `search_data` را روی `Hex` و در صورت نیاز ماسک‌ها را روی `Binary` قرار دهید.
 
-### مقادیر نوشته‌شده در سه ورودی
+## مقادیر مورد انتظار
+
+سه ورودی نوشته‌شده:
 
 ```text
-Entry 0:
-stored_data   = 60
-stored_x_mask = 0F
-Pattern       = 0110XXXX
-
-Entry 1:
-stored_data   = 68
-stored_x_mask = 87
-Pattern       = X1101XXX
-
-Entry 2:
-stored_data   = 2C
-stored_x_mask = 52
-Pattern       = 0X1X11X0
+Entry 0: stored_data=60, stored_x_mask=0F, pattern=0110XXXX
+Entry 1: stored_data=68, stored_x_mask=87, pattern=X1101XXX
+Entry 2: stored_data=2C, stored_x_mask=52, pattern=0X1X11X0
 ```
 
-در `stored_x_mask`، بیت یک یعنی همان موقعیت در مقایسه نادیده گرفته می‌شود.
-
-### مقادیر مورد انتظار در Wave
-
-برای ورودی مشترک سه الگو:
+برای جست‌وجوی مشترک:
 
 ```text
 search_data = 6E
 match_lines = 7
 ```
 
-نمایش دودویی خروجی باید چنین باشد:
+نمایش دودویی `match_lines` باید باشد:
 
 ```text
-match_lines = 0111
+0111
 ```
 
-یعنی ورودی‌های صفر، یک و دو هم‌زمان تطبیق دارند و ورودی سه نامعتبر است.
-
-برای ورودی نامنطبق:
+برای جست‌وجوی نامنطبق:
 
 ```text
 search_data = FF
@@ -328,40 +333,77 @@ match_lines = 0
 نمایش دودویی:
 
 ```text
-match_lines = 0000
+0000
 ```
 
 ---
 
-## اجرای هر سه تست پشت سر هم
+# اجرای هر سه تست با یک بلوک
 
-در ترمینال و از ریشه مخزن اجرا کنید:
+این بلوک را داخل پوشه `DSDL9` اجرا کنید:
 
 ```bash
-mkdir -p DSDL9/build
+mkdir -p build
+rm -f build/*.vvp build/*.vcd
 
 iverilog -g2012 -Wall -s tb_tcam_exact \
-  -o DSDL9/build/tb_tcam_exact.vvp \
-  DSDL9/tcam_entry.v DSDL9/tcam.v DSDL9/tb_tcam_exact.v
-(cd DSDL9/build && vvp ./tb_tcam_exact.vvp)
+  -o build/tb_tcam_exact.vvp \
+  tcam_entry.v tcam.v tb_tcam_exact.v
+vvp build/tb_tcam_exact.vvp
 
 iverilog -g2012 -Wall -s tb_tcam_reset \
-  -o DSDL9/build/tb_tcam_reset.vvp \
-  DSDL9/tcam_entry.v DSDL9/tcam.v DSDL9/tb_tcam_reset.v
-(cd DSDL9/build && vvp ./tb_tcam_reset.vvp)
+  -o build/tb_tcam_reset.vvp \
+  tcam_entry.v tcam.v tb_tcam_reset.v
+vvp build/tb_tcam_reset.vvp
 
 iverilog -g2012 -Wall -s tb_tcam_wildcard \
-  -o DSDL9/build/tb_tcam_wildcard.vvp \
-  DSDL9/tcam_entry.v DSDL9/tcam.v DSDL9/tb_tcam_wildcard.v
-(cd DSDL9/build && vvp ./tb_tcam_wildcard.vvp)
+  -o build/tb_tcam_wildcard.vvp \
+  tcam_entry.v tcam.v tb_tcam_wildcard.v
+vvp build/tb_tcam_wildcard.vvp
+
+test -s build/tb_tcam_exact.vcd
+test -s build/tb_tcam_reset.vcd
+test -s build/tb_tcam_wildcard.vcd
+printf 'All tests passed and all VCD files were created.\n'
 ```
 
-سپس فایل‌های موج را جداگانه باز کنید. هر فرمان را پس از بستن پنجره قبلی اجرا کنید:
+# اگر GTKWave باز نشد
+
+ابتدا وجود فایل را بررسی کنید:
 
 ```bash
-gtkwave DSDL9/build/tb_tcam_exact.vcd
-gtkwave DSDL9/build/tb_tcam_reset.vcd
-gtkwave DSDL9/build/tb_tcam_wildcard.vcd
+pwd
+ls -lh build/*.vcd
 ```
 
-پس از بازشدن GTKWave، برای دیدن کل بازه شبیه‌سازی از گزینه `Time > Zoom > Zoom Full` استفاده کنید.
+سپس محیط گرافیکی را بررسی کنید:
+
+```bash
+printf 'DISPLAY=%s\nWAYLAND_DISPLAY=%s\n' "$DISPLAY" "$WAYLAND_DISPLAY"
+```
+
+## Linux دارای دسکتاپ
+
+داخل پوشه `DSDL9` اجرا کنید:
+
+```bash
+gtkwave "$PWD/build/tb_tcam_exact.vcd"
+```
+
+## WSL با GTKWave نصب‌شده در Windows
+
+اگر فرمان `gtkwave.exe` در دسترس است، اجرا کنید:
+
+```bash
+gtkwave.exe "$(wslpath -w "$PWD/build/tb_tcam_exact.vcd")"
+```
+
+اگر پیام زیر را دریافت کردید:
+
+```text
+Could not initialize GTK! Is DISPLAY env var/xhost set?
+```
+
+فایل VCD سالم است، اما ترمینال شما نمایشگر گرافیکی ندارد. در اتصال SSH یا سرور بدون دسکتاپ، فایل `build/*.vcd` را به سیستم دارای محیط گرافیکی منتقل و آن را در GTKWave محلی باز کنید.
+
+پس از بازشدن GTKWave، از `Time > Zoom > Zoom Full` استفاده کنید تا کل شبیه‌سازی دیده شود.

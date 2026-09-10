@@ -33,7 +33,7 @@ module tb_tcam_reset;
     always #5 clk = ~clk;
 
     initial begin
-        $dumpfile("tb_tcam_reset.vcd");
+        $dumpfile("build/tb_tcam_reset.vcd");
         $dumpvars(0, tb_tcam_reset);
     end
 
