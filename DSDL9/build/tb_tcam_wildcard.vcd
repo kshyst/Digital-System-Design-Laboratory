@@ -1,0 +1,336 @@
+$date
+	Thu Sep 10 15:28:40 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_tcam_wildcard $end
+$var wire 4 ! match_lines [3:0] $end
+$var parameter 32 " ADDR_WIDTH $end
+$var parameter 32 # DATA_WIDTH $end
+$var parameter 32 $ DEPTH $end
+$var reg 1 % clk $end
+$var reg 1 & reset $end
+$var reg 8 ' search_data [7:0] $end
+$var reg 2 ( write_address [1:0] $end
+$var reg 8 ) write_data [7:0] $end
+$var reg 1 * write_enable $end
+$var reg 8 + write_x_mask [7:0] $end
+$scope module dut $end
+$var wire 1 % clk $end
+$var wire 1 & reset $end
+$var wire 8 , search_data [7:0] $end
+$var wire 2 - write_address [1:0] $end
+$var wire 8 . write_data [7:0] $end
+$var wire 1 * write_enable $end
+$var wire 8 / write_x_mask [7:0] $end
+$var wire 4 0 match_lines [3:0] $end
+$var parameter 32 1 ADDR_WIDTH $end
+$var parameter 32 2 DATA_WIDTH $end
+$var parameter 32 3 DEPTH $end
+$scope begin entries[0] $end
+$var parameter 2 4 ENTRY_ADDRESS $end
+$var parameter 2 5 entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 6 match $end
+$var wire 8 7 mismatched_bits [7:0] $end
+$var wire 1 & reset $end
+$var wire 8 8 search_data [7:0] $end
+$var wire 8 9 write_data [7:0] $end
+$var wire 1 : write_enable $end
+$var wire 8 ; write_x_mask [7:0] $end
+$var parameter 32 < DATA_WIDTH $end
+$var reg 8 = stored_data [7:0] $end
+$var reg 8 > stored_x_mask [7:0] $end
+$var reg 1 ? valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[1] $end
+$var parameter 2 @ ENTRY_ADDRESS $end
+$var parameter 2 A entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 B match $end
+$var wire 8 C mismatched_bits [7:0] $end
+$var wire 1 & reset $end
+$var wire 8 D search_data [7:0] $end
+$var wire 8 E write_data [7:0] $end
+$var wire 1 F write_enable $end
+$var wire 8 G write_x_mask [7:0] $end
+$var parameter 32 H DATA_WIDTH $end
+$var reg 8 I stored_data [7:0] $end
+$var reg 8 J stored_x_mask [7:0] $end
+$var reg 1 K valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[2] $end
+$var parameter 2 L ENTRY_ADDRESS $end
+$var parameter 3 M entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 N match $end
+$var wire 8 O mismatched_bits [7:0] $end
+$var wire 1 & reset $end
+$var wire 8 P search_data [7:0] $end
+$var wire 8 Q write_data [7:0] $end
+$var wire 1 R write_enable $end
+$var wire 8 S write_x_mask [7:0] $end
+$var parameter 32 T DATA_WIDTH $end
+$var reg 8 U stored_data [7:0] $end
+$var reg 8 V stored_x_mask [7:0] $end
+$var reg 1 W valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[3] $end
+$var parameter 2 X ENTRY_ADDRESS $end
+$var parameter 3 Y entry_index $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 Z match $end
+$var wire 8 [ mismatched_bits [7:0] $end
+$var wire 1 & reset $end
+$var wire 8 \ search_data [7:0] $end
+$var wire 8 ] write_data [7:0] $end
+$var wire 1 ^ write_enable $end
+$var wire 8 _ write_x_mask [7:0] $end
+$var parameter 32 ` DATA_WIDTH $end
+$var reg 8 a stored_data [7:0] $end
+$var reg 8 b stored_x_mask [7:0] $end
+$var reg 1 c valid $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope task write_entry $end
+$var reg 2 d address [1:0] $end
+$var reg 8 e data [7:0] $end
+$var reg 8 f x_mask [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b1000 `
+b11 Y
+b11 X
+b1000 T
+b10 M
+b10 L
+b1000 H
+b1 A
+b1 @
+b1000 <
+b0 5
+b0 4
+b100 3
+b1000 2
+b10 1
+b100 $
+b1000 #
+b10 "
+$end
+#0
+$dumpvars
+bx f
+bx e
+bx d
+xc
+bx b
+bx a
+b0 _
+0^
+b0 ]
+b0 \
+bx [
+xZ
+xW
+bx V
+bx U
+b0 S
+0R
+b0 Q
+b0 P
+bx O
+xN
+xK
+bx J
+bx I
+b0 G
+0F
+b0 E
+b0 D
+bx C
+xB
+x?
+bx >
+bx =
+b0 ;
+0:
+b0 9
+b0 8
+bx 7
+x6
+bx 0
+b0 /
+b0 .
+b0 -
+b0 ,
+b0 +
+0*
+b0 )
+b0 (
+b0 '
+1&
+0%
+bx !
+$end
+#5000
+06
+0B
+0N
+b0 !
+b0 0
+0Z
+0?
+0K
+0W
+0c
+1%
+#6000
+1:
+1*
+b1111 +
+b1111 /
+b1111 ;
+b1111 G
+b1111 S
+b1111 _
+b1100000 )
+b1100000 .
+b1100000 9
+b1100000 E
+b1100000 Q
+b1100000 ]
+b1111 f
+b1100000 e
+b0 d
+0&
+#10000
+0%
+#15000
+b1100000 7
+b0 !
+b0 0
+06
+1?
+b1111 >
+b1100000 =
+1%
+#16000
+0:
+1F
+b10000111 +
+b10000111 /
+b10000111 ;
+b10000111 G
+b10000111 S
+b10000111 _
+b1101000 )
+b1101000 .
+b1101000 9
+b1101000 E
+b1101000 Q
+b1101000 ]
+b1 (
+b1 -
+b10000111 f
+b1101000 e
+b1 d
+1*
+#20000
+0%
+#25000
+b1101000 C
+b0 !
+b0 0
+0B
+1K
+b10000111 J
+b1101000 I
+1%
+#26000
+0F
+1R
+b1010010 +
+b1010010 /
+b1010010 ;
+b1010010 G
+b1010010 S
+b1010010 _
+b101100 )
+b101100 .
+b101100 9
+b101100 E
+b101100 Q
+b101100 ]
+b10 (
+b10 -
+b1010010 f
+b101100 e
+b10 d
+1*
+#30000
+0%
+#35000
+b101100 O
+b0 !
+b0 0
+0N
+1W
+b1010010 V
+b101100 U
+1%
+#36000
+16
+1B
+b111 !
+b111 0
+1N
+b0 7
+b0 C
+b0 O
+0R
+b1101110 '
+b1101110 ,
+b1101110 8
+b1101110 D
+b1101110 P
+b1101110 \
+0*
+#40000
+0%
+#45000
+1%
+#47000
+06
+0B
+b0 !
+b0 0
+0N
+b10010000 7
+b10000 C
+b10000001 O
+b11111111 '
+b11111111 ,
+b11111111 8
+b11111111 D
+b11111111 P
+b11111111 \
+#50000
+0%
+#55000
+1%
+#58000

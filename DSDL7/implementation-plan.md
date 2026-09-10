@@ -223,7 +223,7 @@ they last exactly one cycle. Do not update `rec_data` in the invalid branch.
 
 - [ ] **Step 4: Implement the false-start test**
 
-In `tb_uart_false_start.v`, hold `rx` low for one clock with `BIT_TICKS = 4`,
+In `tb_uart_false_start.v`, hold `rx` low for one clock with `BIT_TICKS = 10`,
 prove no completion occurs, then prove the next valid raw frame succeeds.
 
 - [ ] **Step 5: Compile and run all three receiver tests**

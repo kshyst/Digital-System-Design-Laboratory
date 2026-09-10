@@ -1,0 +1,16 @@
+
+State Machine - |UARTTop|UARTReceiver:receiver|state
+Name state.DATA state.PARITY state.START state.IDLE state.STOP 
+state.IDLE 0 0 0 0 0 
+state.START 0 0 1 1 0 
+state.PARITY 0 1 0 1 0 
+state.DATA 1 0 0 1 0 
+state.STOP 0 0 0 1 1 
+
+State Machine - |UARTTop|UARTSender:sender|state
+Name state.DATA state.PARITY state.START state.IDLE state.STOP 
+state.IDLE 0 0 0 0 0 
+state.START 0 0 1 1 0 
+state.PARITY 0 1 0 1 0 
+state.DATA 1 0 0 1 0 
+state.STOP 0 0 0 1 1 

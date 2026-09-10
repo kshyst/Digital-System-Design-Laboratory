@@ -1,0 +1,621 @@
+DSDL EXPERIMENT 7: UART DESIGN AND SIMULATION
+Complete English Presentation Script
+
+Target speaking time: 12 to 15 minutes, plus questions
+
+
+BEFORE THE PRESENTATION
+
+Open these files in separate editor tabs with line numbers enabled:
+
+1. آزمایش هفتم.pdf
+2. UARTSender.v
+3. UARTReceiver.v
+4. UARTTop.v
+5. Tester.v
+6. tb_uart_frame_format.v
+7. tb_uart_valid.v
+8. tb_uart_parity_error.v
+9. tb_uart_stop_error.v
+10. tb_uart_back_to_back.v
+11. README.md
+
+Use the commands already listed in README.md. The most useful live demonstrations are:
+
+- README.md lines 7-10: exact frame order and 434-clock symbol timing.
+- README.md lines 13-16: successful loopback reception.
+- README.md lines 19-22: deliberate parity error.
+- README.md lines 25-28: deliberate stop-bit error.
+- README.md lines 31-34: two consecutive frames.
+- README.md lines 1-4: complete aggregate regression.
+
+Each command compiles the selected testbench, runs it, creates a VCD file under /tmp, and opens that waveform in GTKWave.
+
+For the main loopback waveform, display these top-level signals in this order:
+
+clk
+rstN
+new_data
+send_data[6:0]
+tx
+busy
+rec_data[6:0]
+rec_new_data
+correct_data
+
+For a detailed explanation in tb_uart_valid, also display these internal signals:
+
+dut.sender.state[2:0]
+dut.sender.tick_count
+dut.sender.bit_index[2:0]
+dut.sender.data_latch[6:0]
+dut.sender.parity_latch
+dut.receiver.rx_meta
+dut.receiver.rx_sync
+dut.receiver.state[2:0]
+dut.receiver.tick_count
+dut.receiver.bit_index[2:0]
+dut.receiver.data_latch[6:0]
+dut.receiver.parity_latch
+
+In the aggregate Tester waveform, use loopback.sender and loopback.receiver
+instead of dut.sender and dut.receiver. The separate malformed-frame receiver
+is under raw_receiver.
+
+The numeric state encoding in both finite-state machines is:
+
+0 = IDLE
+1 = START
+2 = PARITY
+3 = DATA
+4 = STOP
+
+
+1. OPENING AND PROJECT PURPOSE
+
+SHOW:
+Experiment PDF, page 2, first two paragraphs.
+
+SAY:
+
+"This project is Experiment 7 of the Digital System Design Laboratory. Its purpose is to design and simulate a UART-style asynchronous serial transmitter and receiver in synthesizable Verilog.
+
+UART stands for Universal Asynchronous Receiver Transmitter. The important idea is that a parallel data word is converted into a timed sequence of bits on one serial line. The receiver observes that line, reconstructs the parallel word, and determines whether the frame is valid.
+
+This experiment uses seven-bit data, so it naturally represents a seven-bit ASCII value. It also uses an assignment-specific frame order. That detail is important: this is not the most common commercial UART ordering, because the parity bit appears before the data bits. Our implementation follows the experiment document exactly."
+
+POINT OUT:
+
+- The document says the design must be implemented as finite-state machines.
+- The sender and receiver are separate synthesizable modules.
+- A top-level module connects them in direct internal loopback.
+- A complete testbench must demonstrate correct reception and deliberate errors.
+
+
+2. THE SERIAL FRAME
+
+SHOW:
+Experiment PDF, page 2, section 1, especially the displayed frame format and parity equation.
+
+SAY:
+
+"The serial line is high while idle. A transmission begins when the line becomes zero for one start-bit interval.
+
+The complete assignment frame contains ten bits in this exact order:
+
+Start zero, parity, D0, D1, D2, D3, D4, D5, D6, and stop one.
+
+The seven data bits are transmitted least-significant bit first. The parity bit is the XOR reduction of D0 through D6. Because the transmitted parity equals the XOR of the data, the XOR of all eight data-plus-parity bits is zero. This is even parity.
+
+For the document's example, send_data is 7'b1011001. From D0 to D6, the transmitted data sequence is 1, 0, 0, 1, 1, 0, 1. There are four ones, so the parity bit is zero. The complete serial sequence is therefore:
+
+0, 0, 1, 0, 0, 1, 1, 0, 1, 1.
+
+The first zero is the start bit, the second zero is parity, the next seven values are D0 through D6, and the final one is the stop bit."
+
+SHOW IN CODE:
+
+- UARTSender.v lines 33-37: the five sender state constants.
+- UARTSender.v lines 45-48: the direct mapping from state to tx and busy.
+- UARTSender.v line 47: parity is placed on tx during the PARITY state.
+- UARTSender.v line 48: data_latch[bit_index] sends D0 through D6.
+- UARTSender.v line 64: parity is calculated with the Verilog reduction-XOR operator.
+
+SAY:
+
+"The one-character expression ^send_data is reduction XOR. It combines all seven bits into the single parity bit required by the PDF."
+
+
+3. TIMING AND BIT_TICKS
+
+SHOW:
+Experiment PDF, page 4, section 4.
+
+SAY:
+
+"The standard target baud rate in the document is 115200 bits per second. At a 50 megahertz system clock, the number of clock cycles per bit is approximately 50,000,000 divided by 115,200, which is 434.
+
+For that reason, BIT_TICKS defaults to 434. Each serial symbol remains stable for exactly that many rising clock edges. The same parameter is passed to both the sender and receiver, so they agree on the bit duration.
+
+The document also explicitly allows a smaller BIT_TICKS during simulation. That does not change the frame format; it only reduces the number of simulated clock cycles. The aggregate Tester uses BIT_TICKS equal to 2, while the dedicated frame-format test keeps the default 434 and proves the real counter length."
+
+SHOW IN CODE:
+
+- UARTSender.v lines 5-7: default BIT_TICKS = 434.
+- UARTReceiver.v lines 6-8: the same default.
+- UARTTop.v lines 4-6: one shared top-level parameter.
+- UARTTop.v lines 18 and 27: the same value is passed to both instances.
+- UARTSender.v lines 16-31: counter width is derived from BIT_TICKS.
+- UARTReceiver.v lines 17-33: LAST_TICK and HALF_TICK are derived from BIT_TICKS.
+- Tester.v lines 7-8: accelerated aggregate simulation with a bounded timeout.
+- tb_uart_frame_format.v lines 5-6: the 434-cycle test and sample data.
+
+IMPORTANT CLARIFICATION IF ASKED:
+
+"The document independently suggests a 10-nanosecond testbench clock period. A 10-nanosecond period is 100 megahertz, so the frame-format waveform takes 4.34 microseconds per bit when BIT_TICKS is 434. That test proves the required count of 434 clock cycles. On the intended 50-megahertz hardware clock, 434 cycles take 8.68 microseconds per bit, or approximately 115200 bits per second."
+
+
+4. PROJECT ARCHITECTURE
+
+SHOW:
+Experiment PDF, page 4, section 5.
+
+SAY:
+
+"The document requires four main files.
+
+UARTSender.v converts one seven-bit parallel word into the serial frame.
+
+UARTReceiver.v synchronizes and samples the serial input, reconstructs the data, and checks parity and the stop bit.
+
+UARTTop.v creates direct loopback by connecting the sender's tx output to the receiver's rx input.
+
+Tester.v generates the clock and reset, applies stimulus, checks outputs, injects malformed receiver frames, and reports failures automatically.
+
+The synthesizable data path is simple: send_data and new_data enter the sender; the sender produces tx; tx directly enters the receiver; the receiver produces rec_data, rec_new_data, and correct_data."
+
+SHOW IN CODE:
+
+- UARTTop.v lines 4-16: the complete external interface.
+- UARTTop.v lines 18-25: one sender instance.
+- UARTTop.v lines 27-34: one receiver instance.
+- UARTTop.v line 30: the exact direct loopback connection, .rx(tx).
+
+SAY:
+
+"There is no fault-injection multiplexer in the production path. For error tests, a receiver is instantiated directly in the testbench and is driven with a deliberately malformed frame. This keeps UARTTop synthesizable and keeps its loopback exactly as required."
+
+
+5. SENDER FINITE-STATE MACHINE
+
+SHOW:
+UARTSender.v lines 5-14, then lines 33-48, then lines 50-117.
+
+SAY:
+
+"The sender interface has the system clock, active-low reset, a new_data request, the seven-bit parallel input, and the tx and busy outputs.
+
+In IDLE, tx is one and busy is zero. The sender accepts new_data only in this state. When it accepts a request, it snapshots both send_data and its parity. This snapshot is important because later changes at the input cannot corrupt a frame that is already being transmitted."
+
+PINPOINT:
+
+- UARTSender.v lines 39-43: state, tick counter, data index, data latch, and parity latch.
+- UARTSender.v line 45: busy is true in every state except IDLE.
+- UARTSender.v lines 46-48: tx is zero in START, parity in PARITY, the indexed bit in DATA, and one otherwise.
+- UARTSender.v lines 50-57: asynchronous active-low reset.
+- UARTSender.v lines 59-66: accept new_data, latch the word, calculate parity, and enter START.
+
+SAY:
+
+"The START, PARITY, DATA, and STOP states each use the tick counter to hold one symbol for BIT_TICKS cycles. The data state advances bit_index from zero through six. After D6, the machine enters STOP. After the complete stop-bit interval, it returns to IDLE."
+
+PINPOINT:
+
+- UARTSender.v lines 69-76: START to PARITY after one full symbol.
+- UARTSender.v lines 78-86: PARITY to DATA.
+- UARTSender.v lines 88-99: D0 through D6 and the transition to STOP.
+- UARTSender.v lines 101-108: complete the stop bit and return to IDLE.
+
+SAY:
+
+"The busy-request rule is implemented structurally. new_data is checked only in the IDLE branch at lines 59 through 66. None of the active states checks it, so a second request cannot restart, extend, corrupt, or queue behind the current frame."
+
+
+6. RECEIVER FINITE-STATE MACHINE
+
+SHOW:
+UARTReceiver.v lines 6-15, then lines 31-47, then lines 49-138.
+
+SAY:
+
+"The receiver continuously observes rx. Because rx may be asynchronous to clk, the first implementation choice is a two-flip-flop synchronizer. This was not explicitly demanded by the PDF, but it is the standard safe boundary between an asynchronous input and synchronous control logic."
+
+PINPOINT:
+
+- UARTReceiver.v lines 41-47: receiver state and storage registers.
+- UARTReceiver.v lines 49-58: the two-stage rx_meta and rx_sync synchronizer.
+- UARTReceiver.v lines 60-69: asynchronous reset returns everything to a known idle state.
+
+SAY:
+
+"In IDLE, a synchronized zero is treated as a candidate start. The receiver does not immediately trust it. It waits to the midpoint of the start interval and checks that the line is still low. If the line has returned high, the event was a short glitch and the receiver returns to IDLE without reporting a completed frame.
+
+After confirming the start bit, the receiver samples at the same phase once per full BIT_TICKS interval: first parity, then D0 through D6, then stop."
+
+PINPOINT:
+
+- UARTReceiver.v lines 31-33: full-bit and half-bit counter limits.
+- UARTReceiver.v lines 75-81: candidate-start detection.
+- UARTReceiver.v lines 83-90: midpoint confirmation or false-start rejection.
+- UARTReceiver.v lines 92-101: capture the parity bit.
+- UARTReceiver.v lines 103-115: capture D0 through D6 at matching indexes.
+- UARTReceiver.v lines 117-129: sample and validate the stop bit.
+
+SAY:
+
+"At frame completion, rec_new_data pulses for exactly one clock for either a valid or invalid complete frame. correct_data pulses only when the stop bit is one and the XOR of the received data equals the captured parity.
+
+Notice that rec_data is assigned only inside the valid branch. Therefore, an invalid parity bit or invalid stop bit cannot overwrite the last valid received value. This makes the interface safe: rec_new_data reports that a frame ended, correct_data reports whether it can be trusted, and rec_data changes only when it can be trusted."
+
+PINPOINT:
+
+- UARTReceiver.v lines 71-73: both notification outputs default low every clock, making them one-cycle pulses.
+- UARTReceiver.v line 120: rec_new_data is asserted at every completed stop sample.
+- UARTReceiver.v line 121: both stop and parity are required.
+- UARTReceiver.v lines 122-123: update rec_data and assert correct_data only when valid.
+- UARTReceiver.v line 125: return to IDLE after completion.
+
+
+7. TESTBENCH METHOD REQUIRED BY THE DOCUMENT
+
+SHOW:
+Experiment PDF, page 5, section 6.
+
+SAY:
+
+"The document requires a precise testbench with a known clock period, an initial reset, a sample seven-bit word, a short new_data request, a bounded wait for completion, output comparisons, and visible diagnostic output. It specifically recommends showing clk, rstN, new_data, send_data, tx, busy, rec_data, rec_new_data, and correct_data in the waveform.
+
+Our tests are self-checking. A correct result prints PASS. A mismatch calls $fatal with the expected and observed values. Timeouts prevent a broken state machine from hanging the simulation forever. Inputs are changed on negative clock edges so they are stable before the positive edge used by the RTL."
+
+"The final checklist on page 6 asks for the protocol, both state machines, the top-level connection, the testbench scenarios, a waveform, terminal output, and analysis. This presentation follows that same technical order."
+
+SHOW IN AGGREGATE TESTER:
+
+- Tester.v lines 7-10: accelerated timing, timeout, and the two document example values.
+- Tester.v lines 38-57: one loopback top plus one separately driven raw receiver.
+- Tester.v lines 59-60: the 10-nanosecond clock period.
+- Tester.v lines 62-93: completion recording and one-cycle pulse assertions.
+- Tester.v lines 95-123: bounded waits and timeout failures.
+- Tester.v lines 137-146: a one-clock new_data request.
+- Tester.v lines 148-180: exact symbol and complete-frame checks.
+- Tester.v lines 182-206: construction of valid or malformed raw receiver frames.
+- Tester.v lines 208-210: VCD waveform generation.
+
+
+8. THE FOUR MANDATORY TESTS
+
+SHOW:
+Experiment PDF, pages 5 and 6, section 7.
+
+
+8.1 SUCCESSFUL RECEPTION
+
+SAY:
+
+"The first mandatory test sends 7'b1011001 through UARTTop. The expected result is rec_data equal to the transmitted word and correct_data equal to one when rec_new_data announces completion."
+
+PINPOINT:
+
+- tb_uart_valid.v lines 20-30: instantiate the direct loopback top.
+- tb_uart_valid.v lines 45-49: apply 7'b1011001 and pulse new_data.
+- tb_uart_valid.v lines 51-57: bounded wait for rec_new_data.
+- tb_uart_valid.v lines 58-64: verify data, validity, and one-cycle pulse width.
+- README.md line 16: compile, run, and open this test in GTKWave.
+
+EXPECTED TERMINAL RESULT:
+
+PASS: valid UART loopback
+
+
+8.2 PARITY ERROR
+
+SAY:
+
+"The second mandatory test drives the receiver directly. It first sends a valid seed frame, then sends a different frame with the parity bit deliberately inverted. The receiver must still announce completion, but correct_data must remain zero. rec_data must keep the previous valid value."
+
+PINPOINT:
+
+- tb_uart_parity_error.v lines 29-52: hold each raw symbol and construct a complete frame.
+- tb_uart_parity_error.v lines 77-81: establish a known valid rec_data value.
+- tb_uart_parity_error.v line 83: invert the XOR parity deliberately.
+- tb_uart_parity_error.v lines 84-91: require rejection, unchanged rec_data, and a one-cycle completion.
+- README.md line 22: compile, run, and open this test in GTKWave.
+
+EXPECTED TERMINAL RESULT:
+
+PASS: parity errors are rejected
+
+
+8.3 STOP-BIT ERROR
+
+SAY:
+
+"The third mandatory test uses correct data and correct parity but forces the stop bit to zero. This proves that parity alone is not enough; framing must also be correct. The frame completes, but it is invalid and cannot change rec_data."
+
+PINPOINT:
+
+- tb_uart_stop_error.v lines 77-81: establish the valid seed value.
+- tb_uart_stop_error.v line 83: drive correct parity with stop_bit equal to zero.
+- tb_uart_stop_error.v lines 84-92: require correct_data zero, unchanged rec_data, and a one-cycle completion.
+- README.md line 28: compile, run, and open this test in GTKWave.
+
+EXPECTED TERMINAL RESULT:
+
+PASS: stop-bit errors are rejected
+
+
+8.4 CONSECUTIVE FRAMES
+
+SAY:
+
+"The fourth mandatory test sends the two values named in the document: 7'b1011001 and 7'b0101101. The second request is issued at the first legal opportunity after busy returns low. The test records receiver completions and checks that there are exactly two valid results in the original order."
+
+PINPOINT:
+
+- tb_uart_back_to_back.v lines 41-52: record the first and second completion events.
+- tb_uart_back_to_back.v lines 54-62: generate a legal one-clock request.
+- tb_uart_back_to_back.v lines 79-86: send the first value, wait for busy to clear, then send the second.
+- tb_uart_back_to_back.v lines 88-101: require exactly two ordered valid receptions.
+- README.md line 34: compile, run, and open this test in GTKWave.
+
+EXPECTED TERMINAL RESULT:
+
+PASS: consecutive UART frames
+
+
+9. SUPPLEMENTAL ROBUSTNESS TESTS
+
+SAY:
+
+"The four mandatory tests prove the cases listed by the PDF. The project also includes focused tests for requirements that could otherwise fail silently."
+
+PINPOINT EACH TEST:
+
+1. Exact frame order and default timing
+
+- tb_uart_frame_format.v lines 28-40 hold every expected symbol for exactly BIT_TICKS cycles and require busy to stay high.
+- tb_uart_frame_format.v lines 56-66 check start, XOR parity, D0 through D6, and stop in exact order.
+- tb_uart_frame_format.v lines 68-71 verify return to idle and report PASS.
+- README.md line 10 runs the test and opens its waveform.
+
+2. Request while busy
+
+- tb_uart_busy_ignore.v lines 60-66 start the accepted frame.
+- tb_uart_busy_ignore.v lines 68-74 assert a different request while busy.
+- tb_uart_busy_ignore.v lines 76-88 prove only the first value completes and the second request was not queued.
+- README.md line 40 runs the test.
+
+3. Reset and idle values
+
+- tb_uart_reset_idle.v lines 32-40 define the complete idle-output assertion.
+- tb_uart_reset_idle.v lines 42-59 check it during reset and after reset release.
+- README.md line 46 runs the test.
+
+4. Notification pulse semantics
+
+- tb_uart_output_pulses.v lines 83-98 prove a valid completion gives aligned one-cycle rec_new_data and correct_data.
+- tb_uart_output_pulses.v lines 100-110 prove an invalid frame gives one-cycle rec_new_data while correct_data stays low.
+- README.md line 52 runs the test.
+
+5. Exhaustive seven-bit coverage
+
+- tb_uart_all_values.v lines 45-66 loop through every value from 0 to 127, with timeout, equality, validity, and pulse-width checks.
+- README.md line 58 runs the test.
+
+6. False-start rejection
+
+- tb_uart_false_start.v lines 81-87 drive a low pulse shorter than half a bit and require no completion.
+- tb_uart_false_start.v lines 89-96 prove recovery by immediately receiving a valid frame.
+- README.md line 64 runs the test.
+
+SAY:
+
+"Together, these tests cover the full seven-bit input space, state timing, reset, interface pulse widths, busy behavior, malformed frames, and receiver recovery. They are deterministic rather than randomized, so every failure can be reproduced exactly."
+
+
+10. AGGREGATE REGRESSION
+
+SHOW:
+Tester.v lines 208-312.
+
+SAY:
+
+"Tester.v is the complete regression under the exact filename requested by the assignment. It repeats the required cases and the important supplemental checks in one run."
+
+PINPOINT THE ORDER:
+
+- Tester.v lines 208-226: reset and idle outputs.
+- Tester.v lines 228-232: exact valid frame and symbol timing.
+- Tester.v lines 234-248: request asserted while busy.
+- Tester.v lines 250-261: two consecutive frames.
+- Tester.v lines 263-269: all 128 seven-bit values.
+- Tester.v lines 271-277: valid raw receiver frame.
+- Tester.v lines 279-285: deliberate parity error.
+- Tester.v lines 287-293: deliberate stop-bit error.
+- Tester.v lines 295-308: false-start rejection and recovery.
+- Tester.v lines 310-312: final PASS and simulation completion.
+- README.md line 4: compile, run, and open the aggregate waveform.
+
+EXPECTED FINAL TERMINAL RESULT:
+
+PASS: complete DSDL7 UART regression
+
+
+11. LIVE GTKWave DEMONSTRATION
+
+DEMO A: FRAME FORMAT AND 434-CYCLE TIMING
+
+RUN:
+The command at README.md line 10.
+
+IN GTKWave:
+
+1. Add clk, rstN, new_data, send_data, tx, and busy.
+2. Add dut.state, dut.tick_count, dut.bit_index, dut.data_latch, and dut.parity_latch.
+3. Set send_data and internal buses to binary radix.
+4. Zoom to the interval from the new_data pulse until busy falls.
+5. Place markers at two adjacent tx transitions.
+
+SAY:
+
+"Each adjacent symbol boundary is 434 clock cycles apart. busy remains high for all ten symbols. The state changes from START to PARITY to DATA to STOP, and bit_index advances from zero to six during DATA. The waveform order is start zero, parity, D0 through D6, and stop one."
+
+If GTKWave reports time rather than cycle count, explain that the 10-nanosecond simulation clock makes each 434-cycle symbol 4.34 microseconds. Count clock edges or inspect tick_count to prove 434 cycles.
+
+
+DEMO B: VALID LOOPBACK
+
+RUN:
+The command at README.md line 16.
+
+IN GTKWave:
+
+1. Add the nine PDF-recommended signals.
+2. Zoom from the new_data pulse through the rec_new_data pulse.
+3. Display send_data and rec_data in binary.
+
+SAY:
+
+"new_data starts the transaction, busy covers the complete frame, and tx shows the ten serial symbols. At receiver completion, rec_new_data and correct_data are high together for one clock, and rec_data equals 1011001. On the following clock, both notification signals return low."
+
+
+DEMO C: PARITY ERROR
+
+RUN:
+The command at README.md line 22.
+
+IN GTKWave:
+
+1. Add rx, rec_data, rec_new_data, correct_data, dut.parity_latch, and dut.data_latch.
+2. Locate the two rec_new_data pulses.
+
+SAY:
+
+"The first pulse belongs to the valid seed frame, so correct_data is one and rec_data is updated. The second pulse belongs to the corrupted-parity frame, so completion is still reported but correct_data is zero. rec_data remains equal to the seed value."
+
+
+DEMO D: STOP ERROR OR CONSECUTIVE FRAMES
+
+If the examiner asks about framing errors, run README.md line 28 and show that a zero stop bit produces correct_data equal to zero.
+
+If the examiner asks about throughput or repeated transfers, run README.md line 34 and show two ordered rec_new_data pulses with the two document example values.
+
+
+12. RESULTS AND CONCLUSION
+
+SAY:
+
+"The completed project implements the experiment's seven-bit asynchronous serial link as three synthesizable modules.
+
+The sender latches a request and generates the exact ten-symbol, parity-before-data frame. The receiver synchronizes rx, confirms the start bit at its midpoint, samples every later symbol at the same phase, and validates both parity and stop. UARTTop connects tx directly to rx for loopback.
+
+The four mandatory simulations pass: correct reception, parity-error rejection, stop-error rejection, and two consecutive frames. Additional tests prove the default 434-cycle timing, ignore requests while busy, verify reset and one-cycle notifications, reject false starts, and exhaustively cover all 128 possible seven-bit values.
+
+The main lesson is that a serial protocol is not only a sequence of bit values. Correct behavior depends on frame order, exact timing, stable data capture, state transitions, error checks, and clear completion semantics. The state machines and self-checking testbenches verify all of those properties."
+
+
+13. LIKELY QUESTIONS AND PRECISE ANSWERS
+
+QUESTION: Why is parity before the data bits?
+
+ANSWER:
+"That is the explicit frame order on page 2 of the experiment document. It is assignment-specific and differs from the common UART order. UARTSender.v lines 46-48 and the receiver state sequence at UARTReceiver.v lines 92-115 implement that exact requirement."
+
+
+QUESTION: Is this even or odd parity?
+
+ANSWER:
+"It is even parity. The parity bit equals the XOR of the seven data bits. Therefore, XORing the seven data bits and the parity bit produces zero, meaning the total number of ones is even."
+
+
+QUESTION: Why do you latch send_data?
+
+ANSWER:
+"The external input may change while a frame is active. UARTSender.v lines 62-64 copy both data and parity when the request is accepted, so the active frame remains stable."
+
+
+QUESTION: What happens if new_data is asserted while busy?
+
+ANSWER:
+"It is ignored. new_data is examined only in the IDLE state at UARTSender.v lines 59-66. tb_uart_busy_ignore.v lines 68-88 prove that the active frame is unchanged and that the extra request is not queued."
+
+
+QUESTION: Why use a two-flip-flop synchronizer?
+
+ANSWER:
+"rx is asynchronous to clk. The two registers at UARTReceiver.v lines 49-58 reduce the risk that metastability reaches the finite-state machine. This is a robustness choice beyond the minimum wording of the PDF."
+
+
+QUESTION: Why sample in the middle of a bit?
+
+ANSWER:
+"The midpoint is farther from serial transitions and therefore provides more timing margin. UARTReceiver.v lines 83-90 confirm the start bit at its midpoint, and all later samples remain one full BIT_TICKS interval apart."
+
+
+QUESTION: What does rec_new_data mean for an invalid frame?
+
+ANSWER:
+"It means that a complete frame was received. correct_data tells whether that frame passed parity and stop checks. UARTReceiver.v lines 117-125 assert rec_new_data for every completion but update rec_data and assert correct_data only for a valid frame."
+
+
+QUESTION: Why does invalid input leave rec_data unchanged?
+
+ANSWER:
+"This prevents corrupted data from replacing the last trusted value. The assignment says an invalid frame must not be reported as valid, and the valid-only assignment at UARTReceiver.v line 122 enforces that policy."
+
+
+QUESTION: Why are some tests run with BIT_TICKS equal to 2 or 10?
+
+ANSWER:
+"The PDF explicitly permits a smaller parameter for faster simulation. The protocol behavior is unchanged. The dedicated frame-format test uses the default 434, while faster tests use 2 or 10 to reduce simulation time."
+
+
+QUESTION: Does the 10-nanosecond testbench clock represent the 50-megahertz hardware clock?
+
+ANSWER:
+"No. A 10-nanosecond period is 100 megahertz and is the PDF's testbench example. The 434-cycle default is derived for a 50-megahertz hardware clock. The frame-format test verifies the cycle count, while the physical baud rate depends on the actual clock period."
+
+
+QUESTION: Why not use majority-vote oversampling?
+
+ANSWER:
+"The experiment requires one configurable bit duration and does not require an oversampling clock. Synchronization plus midpoint sampling is sufficient for the stated loopback experiment and keeps the design small. Majority voting would be a possible extension for a noisier external link."
+
+
+QUESTION: How do you know every seven-bit value works?
+
+ANSWER:
+"tb_uart_all_values.v lines 45-66 transmit every integer from 0 through 127 and check data equality, validity, timeout, and pulse width for every value. Tester.v lines 263-269 repeat that exhaustive loop in the aggregate regression."
+
+
+QUESTION: Is the design synthesizable?
+
+ANSWER:
+"UARTSender.v, UARTReceiver.v, and UARTTop.v use synthesizable registers, combinational assignments, counters, and clocked state machines without delays or test-only fault paths. Simulation-only constructs such as delays, $fatal, $display, $dumpfile, and $dumpvars are confined to the testbenches. The current RTL hierarchy also passes a Yosys hierarchy, process, optimization, and design-consistency check. I am not claiming an FPGA board deployment unless it is demonstrated separately."
+
+
+QUESTION: What are the main limitations?
+
+ANSWER:
+"This implementation is intentionally scoped to the experiment: seven data bits, one assignment-specific parity bit before data, one stop bit, one configurable bit duration, no transmit queue, and single-sample midpoint reception. It does not implement configurable word length, selectable parity modes, multiple stop bits, receive buffering, or majority-vote oversampling."
+
+
+14. ONE-MINUTE FALLBACK SUMMARY
+
+If presentation time is cut short, say:
+
+"This project implements the Experiment 7 seven-bit UART link. The frame is assignment-specific: start zero, XOR parity, D0 through D6 least-significant bit first, then stop one. BIT_TICKS defaults to 434 for 115200 bits per second with a 50-megahertz clock.
+
+UARTSender.v contains a five-state transmitter that latches data, holds busy for the full frame, and ignores requests while active. UARTReceiver.v synchronizes rx, confirms the start at midpoint, samples parity, data, and stop, then pulses rec_new_data and asserts correct_data only if parity and stop are valid. UARTTop.v directly connects tx to rx.
+
+The required valid, parity-error, stop-error, and consecutive-frame tests all pass. Additional tests prove exact 434-cycle timing, reset, busy behavior, one-cycle notifications, false-start recovery, and all 128 seven-bit values. The aggregate Tester.v runs the complete regression and produces a GTKWave trace."

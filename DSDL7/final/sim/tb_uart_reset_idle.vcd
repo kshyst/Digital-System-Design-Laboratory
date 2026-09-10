@@ -1,0 +1,181 @@
+$date
+	Mon Aug 24 09:43:54 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_uart_reset_idle $end
+$var wire 1 ! tx $end
+$var wire 1 " rec_new_data $end
+$var wire 7 # rec_data [6:0] $end
+$var wire 1 $ correct_data $end
+$var wire 1 % busy $end
+$var parameter 32 & BIT_TICKS $end
+$var reg 1 ' clk $end
+$var reg 1 ( new_data $end
+$var reg 1 ) rstN $end
+$var reg 7 * send_data [6:0] $end
+$scope module dut $end
+$var wire 1 ' clk $end
+$var wire 1 ( new_data $end
+$var wire 1 ) rstN $end
+$var wire 7 + send_data [6:0] $end
+$var wire 1 ! tx $end
+$var wire 1 " rec_new_data $end
+$var wire 7 , rec_data [6:0] $end
+$var wire 1 $ correct_data $end
+$var wire 1 % busy $end
+$var parameter 32 - BIT_TICKS $end
+$scope module receiver $end
+$var wire 1 ' clk $end
+$var wire 1 ) rstN $end
+$var wire 1 ! rx $end
+$var parameter 32 . BIT_TICKS $end
+$var parameter 3 / DATA $end
+$var parameter 4 0 HALF_TICK $end
+$var parameter 3 1 IDLE $end
+$var parameter 4 2 LAST_TICK $end
+$var parameter 3 3 PARITY $end
+$var parameter 3 4 START $end
+$var parameter 3 5 STOP $end
+$var parameter 32 6 TICK_WIDTH $end
+$var reg 3 7 bit_index [2:0] $end
+$var reg 1 $ correct_data $end
+$var reg 7 8 data_latch [6:0] $end
+$var reg 1 9 parity_latch $end
+$var reg 7 : rec_data [6:0] $end
+$var reg 1 " rec_new_data $end
+$var reg 1 ; rx_meta $end
+$var reg 1 < rx_sync $end
+$var reg 3 = state [2:0] $end
+$var reg 4 > tick_count [3:0] $end
+$scope function counter_width $end
+$var integer 32 ? value [31:0] $end
+$var integer 32 @ width [31:0] $end
+$upscope $end
+$upscope $end
+$scope module sender $end
+$var wire 1 ' clk $end
+$var wire 1 ( new_data $end
+$var wire 1 ) rstN $end
+$var wire 7 A send_data [6:0] $end
+$var wire 1 ! tx $end
+$var wire 1 % busy $end
+$var parameter 32 B BIT_TICKS $end
+$var parameter 3 C DATA $end
+$var parameter 3 D IDLE $end
+$var parameter 4 E LAST_TICK $end
+$var parameter 3 F PARITY $end
+$var parameter 3 G START $end
+$var parameter 3 H STOP $end
+$var parameter 32 I TICK_WIDTH $end
+$var reg 3 J bit_index [2:0] $end
+$var reg 7 K data_latch [6:0] $end
+$var reg 1 L parity_latch $end
+$var reg 3 M state [2:0] $end
+$var reg 4 N tick_count [3:0] $end
+$scope function counter_width $end
+$var integer 32 O value [31:0] $end
+$var integer 32 P width [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope task check_idle $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b100 I
+b100 H
+b1 G
+b10 F
+b1001 E
+b0 D
+b11 C
+b1010 B
+b100 6
+b100 5
+b1 4
+b10 3
+b1001 2
+b0 1
+b100 0
+b11 /
+b1010 .
+b1010 -
+b1010 &
+$end
+#0
+$dumpvars
+bx P
+bx O
+bx N
+bx M
+xL
+bx K
+bx J
+b1111111 A
+bx @
+bx ?
+bx >
+bx =
+x<
+x;
+bx :
+x9
+bx 8
+bx 7
+bx ,
+b1111111 +
+b1111111 *
+1)
+0(
+0'
+x%
+x$
+bx #
+x"
+x!
+$end
+#1000
+1!
+0L
+b0 K
+b0 J
+b0 N
+0%
+b0 M
+1<
+1;
+0$
+0"
+b0 #
+b0 ,
+b0 :
+09
+b0 8
+b0 7
+b0 >
+b0 =
+0)
+#5000
+1'
+#10000
+0'
+#15000
+1'
+#20000
+1)
+0'
+#25000
+1'
+#30000
+0'
+#35000
+1'
+#40000
+0'

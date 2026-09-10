@@ -30,6 +30,11 @@ module tb_tcam_exact;
     always #5 clk = ~clk;
 
     initial begin
+        $dumpfile("build/tb_tcam_exact.vcd");
+        $dumpvars(0, tb_tcam_exact);
+    end
+
+    initial begin
         clk = 1'b0;
         reset = 1'b1;
         write_enable = 1'b0;
@@ -54,11 +59,13 @@ module tb_tcam_exact;
         if (match_lines !== 16'h8000)
             $fatal(1, "Exact value did not select only entry 15: %h", match_lines);
 
+        #10; // Keep the successful search visible in the waveform.
         search_data = 16'hA55B;
         #1;
         if (match_lines !== 16'h0000)
             $fatal(1, "Different value incorrectly matched: %h", match_lines);
 
+        #10;
         $display("PASS: exact TCAM matching");
         $finish;
     end
