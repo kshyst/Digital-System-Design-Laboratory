@@ -32,6 +32,11 @@ module tb_tcam_wildcard;
 
     always #5 clk = ~clk;
 
+    initial begin
+        $dumpfile("tb_tcam_wildcard.vcd");
+        $dumpvars(0, tb_tcam_wildcard);
+    end
+
     task write_entry;
         input [ADDR_WIDTH-1:0] address;
         input [DATA_WIDTH-1:0] data;
