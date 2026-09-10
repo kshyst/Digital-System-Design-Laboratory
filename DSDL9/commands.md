@@ -2,7 +2,7 @@
 
 > تمام دستورهای این فایل باید داخل پوشه `DSDL9` اجرا شوند.
 >
-> دستور `iverilog` فقط فایل اجرایی `.vvp` را می‌سازد. فایل `.vcd` هنگام اجرای دستور `vvp` ساخته می‌شود، نه هنگام کامپایل.
+> فایل اجرایی موقت `.vvp` برای اجرای شبیه‌سازی لازم است، اما در `/tmp` ساخته و بلافاصله حذف می‌شود. فقط فایل‌های `.vcd` در `DSDL9/build/` باقی می‌مانند.
 
 ## ۱. ورود به پوشه و بررسی ابزارها
 
@@ -41,14 +41,15 @@ grep -n '\$dumpfile\|\$dumpvars' tb_tcam_exact.v tb_tcam_reset.v tb_tcam_wildcar
 
 ```bash
 mkdir -p build
-rm -f build/tb_tcam_exact.vvp build/tb_tcam_exact.vcd
+rm -f /tmp/tb_tcam_exact.vvp build/tb_tcam_exact.vcd
 iverilog -g2012 -Wall \
   -s tb_tcam_exact \
-  -o build/tb_tcam_exact.vvp \
+  -o /tmp/tb_tcam_exact.vvp \
   tcam_entry.v \
   tcam.v \
   tb_tcam_exact.v
-vvp build/tb_tcam_exact.vvp
+vvp /tmp/tb_tcam_exact.vvp
+rm -f /tmp/tb_tcam_exact.vvp
 test -s build/tb_tcam_exact.vcd
 printf 'VCD created: %s\n' "$PWD/build/tb_tcam_exact.vcd"
 ```
@@ -145,14 +146,15 @@ match = 0
 
 ```bash
 mkdir -p build
-rm -f build/tb_tcam_reset.vvp build/tb_tcam_reset.vcd
+rm -f /tmp/tb_tcam_reset.vvp build/tb_tcam_reset.vcd
 iverilog -g2012 -Wall \
   -s tb_tcam_reset \
-  -o build/tb_tcam_reset.vvp \
+  -o /tmp/tb_tcam_reset.vvp \
   tcam_entry.v \
   tcam.v \
   tb_tcam_reset.v
-vvp build/tb_tcam_reset.vvp
+vvp /tmp/tb_tcam_reset.vvp
+rm -f /tmp/tb_tcam_reset.vvp
 test -s build/tb_tcam_reset.vcd
 printf 'VCD created: %s\n' "$PWD/build/tb_tcam_reset.vcd"
 ```
@@ -238,14 +240,15 @@ match_lines = 0
 
 ```bash
 mkdir -p build
-rm -f build/tb_tcam_wildcard.vvp build/tb_tcam_wildcard.vcd
+rm -f /tmp/tb_tcam_wildcard.vvp build/tb_tcam_wildcard.vcd
 iverilog -g2012 -Wall \
   -s tb_tcam_wildcard \
-  -o build/tb_tcam_wildcard.vvp \
+  -o /tmp/tb_tcam_wildcard.vvp \
   tcam_entry.v \
   tcam.v \
   tb_tcam_wildcard.v
-vvp build/tb_tcam_wildcard.vvp
+vvp /tmp/tb_tcam_wildcard.vvp
+rm -f /tmp/tb_tcam_wildcard.vvp
 test -s build/tb_tcam_wildcard.vcd
 printf 'VCD created: %s\n' "$PWD/build/tb_tcam_wildcard.vcd"
 ```
@@ -344,22 +347,25 @@ match_lines = 0
 
 ```bash
 mkdir -p build
-rm -f build/*.vvp build/*.vcd
+rm -f /tmp/tb_tcam_exact.vvp /tmp/tb_tcam_reset.vvp /tmp/tb_tcam_wildcard.vvp build/*.vcd
 
 iverilog -g2012 -Wall -s tb_tcam_exact \
-  -o build/tb_tcam_exact.vvp \
+  -o /tmp/tb_tcam_exact.vvp \
   tcam_entry.v tcam.v tb_tcam_exact.v
-vvp build/tb_tcam_exact.vvp
+vvp /tmp/tb_tcam_exact.vvp
+rm -f /tmp/tb_tcam_exact.vvp
 
 iverilog -g2012 -Wall -s tb_tcam_reset \
-  -o build/tb_tcam_reset.vvp \
+  -o /tmp/tb_tcam_reset.vvp \
   tcam_entry.v tcam.v tb_tcam_reset.v
-vvp build/tb_tcam_reset.vvp
+vvp /tmp/tb_tcam_reset.vvp
+rm -f /tmp/tb_tcam_reset.vvp
 
 iverilog -g2012 -Wall -s tb_tcam_wildcard \
-  -o build/tb_tcam_wildcard.vvp \
+  -o /tmp/tb_tcam_wildcard.vvp \
   tcam_entry.v tcam.v tb_tcam_wildcard.v
-vvp build/tb_tcam_wildcard.vvp
+vvp /tmp/tb_tcam_wildcard.vvp
+rm -f /tmp/tb_tcam_wildcard.vvp
 
 test -s build/tb_tcam_exact.vcd
 test -s build/tb_tcam_reset.vcd
