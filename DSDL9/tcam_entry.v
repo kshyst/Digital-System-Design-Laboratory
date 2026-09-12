@@ -2,7 +2,7 @@
 `default_nettype none
 
 // One DATA_WIDTH-bit ternary memory entry.
-// A 1 in stored_x_mask makes the corresponding stored bit a don't-care (X).
+// A 1 in stored_x_mask makes the corresponding stored bit a X.
 module tcam_entry #(
     parameter integer DATA_WIDTH = 16
 ) (

@@ -2,21 +2,22 @@
 `default_nettype none
 
 // Parameterized ternary content-addressable memory.
-// The defaults implement the required 16 entries of 16 ternary bits each.
+// The defaults implement the required 16 entries of 16 ternary bits each. (16 register each 16 bits)
 module tcam #(
-    parameter integer DATA_WIDTH = 16,
-    parameter integer DEPTH = 16,
+    parameter integer DATA_WIDTH = 16, // Registers width
+    parameter integer DEPTH = 16, // Register count
     parameter integer ADDR_WIDTH = (DEPTH <= 1) ? 1 : $clog2(DEPTH)
 ) (
     input  wire                  clk,
     input  wire                  reset,
     input  wire                  write_enable,
-    input  wire [ADDR_WIDTH-1:0] write_address,
-    input  wire [DATA_WIDTH-1:0] write_data,
-    input  wire [DATA_WIDTH-1:0] write_x_mask,
-    input  wire [DATA_WIDTH-1:0] search_data,
-    output wire [DEPTH-1:0]      match_lines
+    input  wire [ADDR_WIDTH-1:0] write_address, // Which register to write on
+    input  wire [DATA_WIDTH-1:0] write_data,    // What to write on the addressed register
+    input  wire [DATA_WIDTH-1:0] write_x_mask,  // X bits
+    input  wire [DATA_WIDTH-1:0] search_data,   // what we matching with
+    output wire [DEPTH-1:0]      match_lines    // what matched
 );
+
     genvar entry_index;
 
     generate
