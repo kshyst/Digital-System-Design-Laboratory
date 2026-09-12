@@ -25,6 +25,17 @@ iverilog -g2012 -Wall -s tb_tcam_write -o /tmp/dsdl9-write.vvp \
 vvp /tmp/dsdl9-write.vvp
 ```
 
+### 16 × 16: independent masks, wildcard matches, and selective writes
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_16x16 -o /tmp/dsdl9-16x16.vvp \
+  tcam_entry.v tcam.v tcam_no_loop.v tb_tcam_16x16.v &&
+vvp /tmp/dsdl9-16x16.vvp
+```
+
+This test checks 72 searches in both implementations. The first load gives each
+entry a different mask bit; the second updates only entries 1, 8, and 15.
+
 ### 4 × 3: independent wildcard masks and all eight search keys
 
 ```bash
@@ -78,12 +89,37 @@ gtkwave build/tb_tcam_3x5.vcd build/tb_tcam_3x5.gtkw &
 gtkwave build/tb_tcam_wildcard.vcd build/tb_tcam_wildcard.gtkw &
 ```
 
+### Full-size 16 × 16 views
+
+Open the complete view to see all sixteen data/mask pairs for each implementation
+(scroll vertically). Entries are ordered 0–15, each data signal followed by its mask.
+
+```bash
+gtkwave build/tb_tcam_16x16.vcd build/tb_tcam_16x16.gtkw &
+```
+
+Or run one of these focused views. They restore the signal groups and zoom used
+in the screenshots; all use the same VCD. No signals need to be added manually.
+
+```bash
+gtkwave build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_0_3.gtkw &
+gtkwave build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_4_7.gtkw &
+gtkwave build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_8_11.gtkw &
+gtkwave build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_12_15.gtkw &
+gtkwave build/tb_tcam_16x16.vcd build/tb_tcam_16x16_selective.gtkw &
+```
+
 If a marker is added accidentally, choose **Markers → Delete Primary Marker** and
 **Markers → Collect All Named Markers** before taking a screenshot.
 
 | Screenshot in `figs/` | Testbench | What it proves |
 | --- | --- | --- |
 | `write-16x16.png` | `tb_tcam_write.v` | Different entries load on the same edge; all sixteen search results are correct. |
+| `16x16-rows-0-3.png` | `tb_tcam_16x16.v` | Rows 0–3: simultaneous storage, independent mask bits 0–3, exact/masked matches and misses. |
+| `16x16-rows-4-7.png` | `tb_tcam_16x16.v` | Rows 4–7: mask bits 4–7 ignore only their own bit. |
+| `16x16-rows-8-11.png` | `tb_tcam_16x16.v` | Rows 8–11: upper-byte mask bits 8–11 work in both implementations. |
+| `16x16-rows-12-15.png` | `tb_tcam_16x16.v` | Rows 12–15: mask bits 12–15, including the highest bit and last entry. |
+| `16x16-selective-writes.png` | `tb_tcam_16x16.v` | Enable 8102 updates entries 1, 8, 15 at 505 ns; entries 0 and 7 remain unchanged; overlapping matches are preserved. |
 | `4x3-wildcards.png` | `tb_tcam_4x3.v` | Four 3-bit entries have independent masks; all eight keys are checked. |
 | `selective-writes.png` | `tb_tcam_selective.v` | Only enabled entries change; disabled entries retain data and masks. |
 | `1x1-reset.png` | `tb_tcam_1x1.v` | One 1-bit entry supports exact/X matches and synchronous reset priority. |

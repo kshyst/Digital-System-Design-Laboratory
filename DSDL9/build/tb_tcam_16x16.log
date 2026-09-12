@@ -1,0 +1,3 @@
+VCD info: dumpfile build/tb_tcam_16x16.vcd opened for output.
+PASS: 16 x 16 independent masks and selective writes (72 searches, both implementations)
+tb_tcam_16x16.v:151: $finish called at 756000 (1ps)

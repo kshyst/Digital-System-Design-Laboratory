@@ -1,0 +1,50 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Sep 12 16:01:13 2026
+[*]
+[dumpfile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_16x16.vcd"
+[dumpfile_mtime] "Sat Sep 12 15:58:57 2026"
+[dumpfile_size] 129335
+[savefile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_16x16_rows_12_15.gtkw"
+[timestart] 376000
+[size] 1780 880
+[pos] 40 70
+*-14.374436 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[signals_width] 620
+@200
+-Control: synchronous writes
+@28
+tb_tcam_16x16.clk
+tb_tcam_16x16.reset
+@22
+tb_tcam_16x16.write_enable[15:0]
+@200
+-Search: loop / no-loop checked against literals
+@22
+tb_tcam_16x16.search_data[15:0]
+tb_tcam_16x16.match_loop[15:0]
+tb_tcam_16x16.match_no_loop[15:0]
+@200
+-Loop: rows 12,13,14,15, data then mask
+@22
+tb_tcam_16x16.loop.valid_parameters.entries[12].entry.stored_data[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[12].entry.stored_x_mask[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[13].entry.stored_data[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[13].entry.stored_x_mask[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[14].entry.stored_data[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[14].entry.stored_x_mask[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[15].entry.stored_data[15:0]
+tb_tcam_16x16.loop.valid_parameters.entries[15].entry.stored_x_mask[15:0]
+@200
+-No-loop: rows 12,13,14,15, data then mask
+@22
+tb_tcam_16x16.no_loop.valid_parameters.entries[12].stored_data[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[12].stored_x_mask[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[13].stored_data[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[13].stored_x_mask[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[14].stored_data[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[14].stored_x_mask[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[15].stored_data[15:0]
+tb_tcam_16x16.no_loop.valid_parameters.entries[15].stored_x_mask[15:0]
+[pattern_trace] 1
+[pattern_trace] 0
