@@ -1,0 +1,40 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Sep 12 06:09:43 2026
+[*]
+[dumpfile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_write.vcd"
+[dumpfile_mtime] "Sat Sep 12 06:08:06 2026"
+[dumpfile_size] 33016
+[savefile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_write.gtkw"
+[timestart] 0
+[size] 1780 880
+[pos] 40 70
+*-15.006700 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[signals_width] 620
+@200
+-Control and independent write lanes
+@28
+tb_tcam_write.clk
+tb_tcam_write.reset
+@22
+tb_tcam_write.write_enable[15:0]
+@200
+-Search and checked results: loop / no-loop
+@22
+tb_tcam_write.search_data[15:0]
+tb_tcam_write.match_loop[15:0]
+tb_tcam_write.match_no_loop[15:0]
+@200
+-Loop implementation: stored rows
+@22
+tb_tcam_write.loop.valid_parameters.entries[0].entry.stored_data[15:0]
+tb_tcam_write.loop.valid_parameters.entries[1].entry.stored_data[15:0]
+tb_tcam_write.loop.valid_parameters.entries[7].entry.stored_data[15:0]
+tb_tcam_write.loop.valid_parameters.entries[15].entry.stored_data[15:0]
+@200
+-No-loop implementation: first / last stored rows
+@22
+tb_tcam_write.no_loop.valid_parameters.entries[0].stored_data[15:0]
+tb_tcam_write.no_loop.valid_parameters.entries[15].stored_data[15:0]
+[pattern_trace] 1
+[pattern_trace] 0

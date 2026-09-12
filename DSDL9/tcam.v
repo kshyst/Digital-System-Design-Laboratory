@@ -1,40 +1,38 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-// Parameterized ternary content-addressable memory.
-// The defaults implement the required 16 entries of 16 ternary bits each. (16 register each 16 bits)
+// Each enabled row stores its own data and X mask on the same rising edge. Meaning multiple registers with defined
+// Data width on a single store.
+// Row i uses write_data[i*DATA_WIDTH +: DATA_WIDTH] with the same mask slice.
 module tcam #(
-    parameter integer DATA_WIDTH = 16, // Registers width
-    parameter integer DEPTH = 16, // Register count
-    parameter integer ADDR_WIDTH = (DEPTH <= 1) ? 1 : $clog2(DEPTH)
+    parameter integer DATA_WIDTH = 16,
+    parameter integer DEPTH = 16
 ) (
-    input  wire                  clk,
-    input  wire                  reset,
-    input  wire                  write_enable,
-    input  wire [ADDR_WIDTH-1:0] write_address, // Which register to write on
-    input  wire [DATA_WIDTH-1:0] write_data,    // What to write on the addressed register
-    input  wire [DATA_WIDTH-1:0] write_x_mask,  // X bits
-    input  wire [DATA_WIDTH-1:0] search_data,   // what we matching with
-    output wire [DEPTH-1:0]      match_lines    // what matched
+    input  wire                         clk,
+    input  wire                         reset,
+    input  wire [DEPTH-1:0]             write_enable,
+    input  wire [DEPTH*DATA_WIDTH-1:0]  write_data,     // Data of all registers
+    input  wire [DEPTH*DATA_WIDTH-1:0]  write_x_mask,   // X values for all registers
+    input  wire [DATA_WIDTH-1:0]        search_data,    // Data we comparing with
+    output wire [DEPTH-1:0]             match_lines     // Registers matched
 );
-
-    genvar entry_index;
+    genvar row;
 
     generate
-        for (entry_index = 0; entry_index < DEPTH; entry_index = entry_index + 1) begin : entries
-            localparam [ADDR_WIDTH-1:0] ENTRY_ADDRESS = entry_index;
-
-            tcam_entry #(
-                .DATA_WIDTH(DATA_WIDTH)
-            ) entry (
-                .clk(clk),
-                .reset(reset),
-                .write_enable(write_enable && (write_address == ENTRY_ADDRESS)),
-                .write_data(write_data),
-                .write_x_mask(write_x_mask),
-                .search_data(search_data),
-                .match(match_lines[entry_index])
-            );
+        if (DATA_WIDTH < 1 || DEPTH < 1) begin : invalid_parameters
+            initial $fatal(1, "TCAM requires DATA_WIDTH >= 1 and DEPTH >= 1");
+        end else begin : valid_parameters
+            for (row = 0; row < DEPTH; row = row + 1) begin : entries
+                tcam_entry #(.DATA_WIDTH(DATA_WIDTH)) entry (
+                    .clk(clk),
+                    .reset(reset),
+                    .write_enable(write_enable[row]),
+                    .write_data(write_data[row*DATA_WIDTH +: DATA_WIDTH]),
+                    .write_x_mask(write_x_mask[row*DATA_WIDTH +: DATA_WIDTH]),
+                    .search_data(search_data),
+                    .match(match_lines[row])
+                );
+            end
         end
     endgenerate
 endmodule

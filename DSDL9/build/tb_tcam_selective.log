@@ -1,0 +1,3 @@
+VCD info: dumpfile build/tb_tcam_selective.vcd opened for output.
+PASS: selective parallel writes preserve disabled rows (both implementations)
+tb_tcam_selective.v:81: $finish called at 126000 (1ps)

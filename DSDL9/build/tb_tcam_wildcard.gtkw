@@ -1,0 +1,44 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Sep 12 06:09:54 2026
+[*]
+[dumpfile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_wildcard.vcd"
+[dumpfile_mtime] "Sat Sep 12 06:08:06 2026"
+[dumpfile_size] 7079
+[savefile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_wildcard.gtkw"
+[timestart] 0
+[size] 1780 880
+[pos] 40 70
+*-12.637499 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[signals_width] 620
+@200
+-Control and write enables
+@28
+tb_tcam_wildcard.clk
+tb_tcam_wildcard.reset
+tb_tcam_wildcard.write_enable[3:0]
+@200
+-Search and checked results: loop / no-loop
+@28
+tb_tcam_wildcard.search_data[7:0]
+tb_tcam_wildcard.match_loop[3:0]
+tb_tcam_wildcard.match_no_loop[3:0]
+@200
+-Loop implementation: independent stored patterns
+@28
+tb_tcam_wildcard.loop.valid_parameters.entries[0].entry.stored_data[7:0]
+tb_tcam_wildcard.loop.valid_parameters.entries[0].entry.stored_x_mask[7:0]
+tb_tcam_wildcard.loop.valid_parameters.entries[1].entry.stored_data[7:0]
+tb_tcam_wildcard.loop.valid_parameters.entries[1].entry.stored_x_mask[7:0]
+tb_tcam_wildcard.loop.valid_parameters.entries[2].entry.stored_data[7:0]
+tb_tcam_wildcard.loop.valid_parameters.entries[2].entry.stored_x_mask[7:0]
+tb_tcam_wildcard.loop.valid_parameters.entries[3].entry.valid
+@200
+-No-loop implementation: independent stored patterns
+@28
+tb_tcam_wildcard.no_loop.valid_parameters.entries[0].stored_data[7:0]
+tb_tcam_wildcard.no_loop.valid_parameters.entries[1].stored_data[7:0]
+tb_tcam_wildcard.no_loop.valid_parameters.entries[2].stored_data[7:0]
+tb_tcam_wildcard.no_loop.valid_parameters.entries[3].valid
+[pattern_trace] 1
+[pattern_trace] 0

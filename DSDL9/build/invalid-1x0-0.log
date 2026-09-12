@@ -1,0 +1,2 @@
+FATAL: tcam.v:22: TCAM requires DATA_WIDTH >= 1 and DEPTH >= 1
+       Time: 0  Scope: tb_tcam_invalid.test_loop.dut.invalid_parameters

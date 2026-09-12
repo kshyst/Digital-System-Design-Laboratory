@@ -1,10 +1,10 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-// Checks the Experiment 9 wildcard example in both implementations.
-module tb_tcam_wildcard;
-    localparam integer DATA_WIDTH = 8;
-    localparam integer DEPTH = 4;
+// 3 x 5 non-power-of-two depth
+module tb_tcam_3x5;
+    localparam integer DATA_WIDTH = 5;
+    localparam integer DEPTH = 3;
     reg clk = 1'b0;
     reg reset = 1'b1;
     reg [DEPTH-1:0] write_enable = 0;
@@ -41,24 +41,22 @@ module tb_tcam_wildcard;
     endtask
 
     initial begin
-        $dumpfile("build/tb_tcam_wildcard.vcd");
-        $dumpvars(0, tb_tcam_wildcard);
+        $dumpfile("build/tb_tcam_3x5.vcd");
+        $dumpvars(0, tb_tcam_3x5);
         @(posedge clk);
         #1 reset = 1'b0;
 
         @(negedge clk);
-        // Rows 0..2: 0110XXXX, X1101XXX, 0X1X11X0.
-        // Row 3 stays invalid even though its input mask is all-X.
-        write_data = {8'b00000000, 8'b00101100, 8'b01101000, 8'b01100000};
-        write_x_mask = {8'b11111111, 8'b01010010, 8'b10000111, 8'b00001111};
-        write_enable = 4'b0111;
+        write_data = {5'b11111, 5'b10101, 5'b00001};
+        write_enable = 3'b111;
         @(posedge clk);
-        #1 write_enable = 4'b0000;
+        #1 write_enable = 3'b000;
+        check_search(5'b00001, 3'b001);
+        check_search(5'b10101, 3'b010);
+        check_search(5'b11111, 3'b100);
+        check_search(5'b00000, 3'b000);
 
-        check_search(8'b01101110, 4'b0111);
-        check_search(8'b11111111, 4'b0000);
-
-        $display("PASS: assignment wildcard example (both implementations)");
+        $display("PASS: 3 x 5 non-power-of-two depth (both implementations)");
         $finish;
     end
 endmodule

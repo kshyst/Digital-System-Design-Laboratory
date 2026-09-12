@@ -14,11 +14,11 @@ module tcam_entry #(
     input  wire [DATA_WIDTH-1:0] search_data,
     output wire                  match
 );
-    reg [DATA_WIDTH-1:0] stored_data;
-    reg [DATA_WIDTH-1:0] stored_x_mask;
-    reg                  valid;
+    reg [DATA_WIDTH-1:0] stored_data;       // Caputered data from write_data
+    reg [DATA_WIDTH-1:0] stored_x_mask;     // Captured mask
+    reg                  valid;             // Single bit valid, some tests show invalid cases
 
-    wire [DATA_WIDTH-1:0] mismatched_bits;
+    wire [DATA_WIDTH-1:0] mismatched_bits;  // Bits that didn't match
 
     always @(posedge clk) begin
         if (reset) begin

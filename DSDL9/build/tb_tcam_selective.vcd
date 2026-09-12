@@ -1,0 +1,745 @@
+$date
+	Sat Sep 12 09:50:56 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_tcam_selective $end
+$var wire 4 ! match_no_loop [3:0] $end
+$var wire 4 " match_loop [3:0] $end
+$var parameter 32 # DATA_WIDTH $end
+$var parameter 32 $ DEPTH $end
+$var reg 1 % clk $end
+$var reg 1 & reset $end
+$var reg 3 ' search_data [2:0] $end
+$var reg 12 ( write_data [11:0] $end
+$var reg 4 ) write_enable [3:0] $end
+$var reg 12 * write_x_mask [11:0] $end
+$scope module loop $end
+$var wire 1 % clk $end
+$var wire 1 & reset $end
+$var wire 3 + search_data [2:0] $end
+$var wire 12 , write_data [11:0] $end
+$var wire 4 - write_enable [3:0] $end
+$var wire 12 . write_x_mask [11:0] $end
+$var wire 4 / match_lines [3:0] $end
+$var parameter 32 0 DATA_WIDTH $end
+$var parameter 32 1 DEPTH $end
+$scope begin valid_parameters $end
+$scope begin entries[0] $end
+$var parameter 2 2 row $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 3 match $end
+$var wire 3 4 mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 5 search_data [2:0] $end
+$var wire 3 6 write_data [2:0] $end
+$var wire 1 7 write_enable $end
+$var wire 3 8 write_x_mask [2:0] $end
+$var parameter 32 9 DATA_WIDTH $end
+$var reg 3 : stored_data [2:0] $end
+$var reg 3 ; stored_x_mask [2:0] $end
+$var reg 1 < valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[1] $end
+$var parameter 2 = row $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 > match $end
+$var wire 3 ? mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 @ search_data [2:0] $end
+$var wire 3 A write_data [2:0] $end
+$var wire 1 B write_enable $end
+$var wire 3 C write_x_mask [2:0] $end
+$var parameter 32 D DATA_WIDTH $end
+$var reg 3 E stored_data [2:0] $end
+$var reg 3 F stored_x_mask [2:0] $end
+$var reg 1 G valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[2] $end
+$var parameter 3 H row $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 I match $end
+$var wire 3 J mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 K search_data [2:0] $end
+$var wire 3 L write_data [2:0] $end
+$var wire 1 M write_enable $end
+$var wire 3 N write_x_mask [2:0] $end
+$var parameter 32 O DATA_WIDTH $end
+$var reg 3 P stored_data [2:0] $end
+$var reg 3 Q stored_x_mask [2:0] $end
+$var reg 1 R valid $end
+$upscope $end
+$upscope $end
+$scope begin entries[3] $end
+$var parameter 3 S row $end
+$scope module entry $end
+$var wire 1 % clk $end
+$var wire 1 T match $end
+$var wire 3 U mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 V search_data [2:0] $end
+$var wire 3 W write_data [2:0] $end
+$var wire 1 X write_enable $end
+$var wire 3 Y write_x_mask [2:0] $end
+$var parameter 32 Z DATA_WIDTH $end
+$var reg 3 [ stored_data [2:0] $end
+$var reg 3 \ stored_x_mask [2:0] $end
+$var reg 1 ] valid $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module no_loop $end
+$var wire 1 % clk $end
+$var wire 1 & reset $end
+$var wire 3 ^ search_data [2:0] $end
+$var wire 12 _ write_data [11:0] $end
+$var wire 4 ` write_enable [3:0] $end
+$var wire 12 a write_x_mask [11:0] $end
+$var wire 4 b match_lines [3:0] $end
+$var parameter 32 c DATA_WIDTH $end
+$var parameter 32 d DEPTH $end
+$scope begin valid_parameters $end
+$scope module entries[0] $end
+$var wire 1 % clk $end
+$var wire 1 e match $end
+$var wire 3 f mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 g search_data [2:0] $end
+$var wire 3 h write_data [2:0] $end
+$var wire 1 i write_enable $end
+$var wire 3 j write_x_mask [2:0] $end
+$var parameter 32 k DATA_WIDTH $end
+$var reg 3 l stored_data [2:0] $end
+$var reg 3 m stored_x_mask [2:0] $end
+$var reg 1 n valid $end
+$upscope $end
+$scope module entries[1] $end
+$var wire 1 % clk $end
+$var wire 1 o match $end
+$var wire 3 p mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 q search_data [2:0] $end
+$var wire 3 r write_data [2:0] $end
+$var wire 1 s write_enable $end
+$var wire 3 t write_x_mask [2:0] $end
+$var parameter 32 u DATA_WIDTH $end
+$var reg 3 v stored_data [2:0] $end
+$var reg 3 w stored_x_mask [2:0] $end
+$var reg 1 x valid $end
+$upscope $end
+$scope module entries[2] $end
+$var wire 1 % clk $end
+$var wire 1 y match $end
+$var wire 3 z mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 { search_data [2:0] $end
+$var wire 3 | write_data [2:0] $end
+$var wire 1 } write_enable $end
+$var wire 3 ~ write_x_mask [2:0] $end
+$var parameter 32 !" DATA_WIDTH $end
+$var reg 3 "" stored_data [2:0] $end
+$var reg 3 #" stored_x_mask [2:0] $end
+$var reg 1 $" valid $end
+$upscope $end
+$scope module entries[3] $end
+$var wire 1 % clk $end
+$var wire 1 %" match $end
+$var wire 3 &" mismatched_bits [2:0] $end
+$var wire 1 & reset $end
+$var wire 3 '" search_data [2:0] $end
+$var wire 3 (" write_data [2:0] $end
+$var wire 1 )" write_enable $end
+$var wire 3 *" write_x_mask [2:0] $end
+$var parameter 32 +" DATA_WIDTH $end
+$var reg 3 ," stored_data [2:0] $end
+$var reg 3 -" stored_x_mask [2:0] $end
+$var reg 1 ." valid $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope task check_search $end
+$var reg 3 /" data [2:0] $end
+$var reg 4 0" expected [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b11 +"
+b11 !"
+b11 u
+b11 k
+b100 d
+b11 c
+b11 Z
+b11 S
+b11 O
+b10 H
+b11 D
+b1 =
+b11 9
+b0 2
+b100 1
+b11 0
+b100 $
+b11 #
+$end
+#0
+$dumpvars
+bx 0"
+bx /"
+x."
+bx -"
+bx ,"
+b0 *"
+0)"
+b0 ("
+b0 '"
+bx &"
+x%"
+x$"
+bx #"
+bx ""
+b0 ~
+0}
+b0 |
+b0 {
+bx z
+xy
+xx
+bx w
+bx v
+b0 t
+0s
+b0 r
+b0 q
+bx p
+xo
+xn
+bx m
+bx l
+b0 j
+0i
+b0 h
+b0 g
+bx f
+xe
+bx b
+b0 a
+b0 `
+b0 _
+b0 ^
+x]
+bx \
+bx [
+b0 Y
+0X
+b0 W
+b0 V
+bx U
+xT
+xR
+bx Q
+bx P
+b0 N
+0M
+b0 L
+b0 K
+bx J
+xI
+xG
+bx F
+bx E
+b0 C
+0B
+b0 A
+b0 @
+bx ?
+x>
+x<
+bx ;
+bx :
+b0 8
+07
+b0 6
+b0 5
+bx 4
+x3
+bx /
+b0 .
+b0 -
+b0 ,
+b0 +
+b0 *
+b0 )
+b0 (
+b0 '
+1&
+0%
+bx "
+bx !
+$end
+#5000
+03
+0>
+0I
+b0 "
+b0 /
+0T
+0e
+0o
+0y
+b0 !
+b0 b
+0%"
+0<
+0G
+0R
+0]
+0n
+0x
+0$"
+0."
+1%
+#6000
+0&
+#10000
+17
+1B
+1M
+1X
+1i
+1s
+1}
+1)"
+b1 6
+b10 A
+b11 L
+b100 W
+b1 h
+b10 r
+b11 |
+b100 ("
+b1111 )
+b1111 -
+b1111 `
+b100011010001 (
+b100011010001 ,
+b100011010001 _
+0%
+#15000
+b100 &"
+b11 z
+b10 p
+b1 f
+b100 U
+b11 J
+b10 ?
+b1 4
+0%"
+0y
+0o
+b0 !
+b0 b
+0e
+0T
+0I
+0>
+b0 "
+b0 /
+03
+1."
+b0 -"
+b100 ,"
+1$"
+b0 #"
+b11 ""
+1x
+b0 w
+b10 v
+1n
+b0 m
+b1 l
+1]
+b0 \
+b100 [
+1R
+b0 Q
+b11 P
+1G
+b0 F
+b10 E
+1<
+b0 ;
+b1 :
+1%
+#16000
+07
+0B
+0M
+0X
+0i
+0s
+0}
+0)"
+b0 )
+b0 -
+b0 `
+#20000
+1B
+1X
+1s
+1)"
+b111 8
+b111 N
+b111 Y
+b111 j
+b111 ~
+b111 *"
+b0 6
+b101 A
+b0 L
+b0 W
+b0 h
+b101 r
+b0 |
+b0 ("
+b1010 )
+b1010 -
+b1010 `
+b111111000111 *
+b111111000111 .
+b111111000111 a
+b101000 (
+b101000 ,
+b101000 _
+0%
+#25000
+b1000 "
+b1000 /
+1T
+b1000 !
+b1000 b
+1%"
+b101 ?
+b0 U
+b101 p
+b0 &"
+b101 E
+b111 \
+b0 [
+b101 v
+b111 -"
+b0 ,"
+1%
+#26000
+b1001 "
+b1001 /
+13
+b1001 !
+b1001 b
+1e
+b0 4
+b100 ?
+b10 J
+b0 f
+b100 p
+b10 z
+0B
+0X
+0s
+0)"
+b1 '
+b1 +
+b1 5
+b1 @
+b1 K
+b1 V
+b1 ^
+b1 g
+b1 q
+b1 {
+b1 '"
+b1001 0"
+b1 /"
+b0 )
+b0 -
+b0 `
+#30000
+0%
+#35000
+1%
+#36000
+b1000 "
+b1000 /
+03
+b1000 !
+b1000 b
+0e
+b11 4
+b111 ?
+b1 J
+b11 f
+b111 p
+b1 z
+b10 '
+b10 +
+b10 5
+b10 @
+b10 K
+b10 V
+b10 ^
+b10 g
+b10 q
+b10 {
+b10 '"
+b1000 0"
+b10 /"
+#40000
+0%
+#45000
+1%
+#46000
+b1100 "
+b1100 /
+1I
+b1100 !
+b1100 b
+1y
+b10 4
+b110 ?
+b0 J
+b10 f
+b110 p
+b0 z
+b11 '
+b11 +
+b11 5
+b11 @
+b11 K
+b11 V
+b11 ^
+b11 g
+b11 q
+b11 {
+b11 '"
+b1100 0"
+b11 /"
+#50000
+0%
+#55000
+1%
+#56000
+b1000 "
+b1000 /
+0I
+b1000 !
+b1000 b
+0y
+b101 4
+b1 ?
+b111 J
+b101 f
+b1 p
+b111 z
+b100 '
+b100 +
+b100 5
+b100 @
+b100 K
+b100 V
+b100 ^
+b100 g
+b100 q
+b100 {
+b100 '"
+b1000 0"
+b100 /"
+#60000
+0%
+#65000
+1%
+#66000
+b1010 "
+b1010 /
+1>
+b1010 !
+b1010 b
+1o
+b100 4
+b0 ?
+b110 J
+b100 f
+b0 p
+b110 z
+b101 '
+b101 +
+b101 5
+b101 @
+b101 K
+b101 V
+b101 ^
+b101 g
+b101 q
+b101 {
+b101 '"
+b1010 0"
+b101 /"
+#70000
+0%
+#75000
+1%
+#76000
+b1000 "
+b1000 /
+0>
+b1000 !
+b1000 b
+0o
+b1 4
+b101 ?
+b11 J
+b1 f
+b101 p
+b11 z
+b0 '
+b0 +
+b0 5
+b0 @
+b0 K
+b0 V
+b0 ^
+b0 g
+b0 q
+b0 {
+b0 '"
+b1000 0"
+b0 /"
+#80000
+0%
+#85000
+1%
+#90000
+b0 8
+b0 N
+b0 Y
+b0 j
+b0 ~
+b0 *"
+b0 A
+b0 r
+b0 *
+b0 .
+b0 a
+b0 (
+b0 ,
+b0 _
+0%
+#95000
+1%
+#96000
+b1001 "
+b1001 /
+13
+b1001 !
+b1001 b
+1e
+b0 4
+b100 ?
+b10 J
+b0 f
+b100 p
+b10 z
+b1 '
+b1 +
+b1 5
+b1 @
+b1 K
+b1 V
+b1 ^
+b1 g
+b1 q
+b1 {
+b1 '"
+b1001 0"
+b1 /"
+#100000
+0%
+#105000
+1%
+#106000
+03
+b1100 "
+b1100 /
+1I
+0e
+b1100 !
+b1100 b
+1y
+b10 4
+b110 ?
+b0 J
+b10 f
+b110 p
+b0 z
+b11 '
+b11 +
+b11 5
+b11 @
+b11 K
+b11 V
+b11 ^
+b11 g
+b11 q
+b11 {
+b11 '"
+b1100 0"
+b11 /"
+#110000
+0%
+#115000
+1%
+#116000
+1>
+b1010 "
+b1010 /
+0I
+1o
+b1010 !
+b1010 b
+0y
+b100 4
+b0 ?
+b110 J
+b100 f
+b0 p
+b110 z
+b101 '
+b101 +
+b101 5
+b101 @
+b101 K
+b101 V
+b101 ^
+b101 g
+b101 q
+b101 {
+b101 '"
+b1010 0"
+b101 /"
+#120000
+0%
+#125000
+1%
+#126000

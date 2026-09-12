@@ -1,9 +1,9 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-// Checks the Experiment 9 wildcard example in both implementations.
-module tb_tcam_wildcard;
-    localparam integer DATA_WIDTH = 8;
+// selective parallel writes preserve disabled rows
+module tb_tcam_selective;
+    localparam integer DATA_WIDTH = 3;
     localparam integer DEPTH = 4;
     reg clk = 1'b0;
     reg reset = 1'b1;
@@ -41,24 +41,43 @@ module tb_tcam_wildcard;
     endtask
 
     initial begin
-        $dumpfile("build/tb_tcam_wildcard.vcd");
-        $dumpvars(0, tb_tcam_wildcard);
+        $dumpfile("build/tb_tcam_selective.vcd");
+        $dumpvars(0, tb_tcam_selective);
         @(posedge clk);
         #1 reset = 1'b0;
 
         @(negedge clk);
-        // Rows 0..2: 0110XXXX, X1101XXX, 0X1X11X0.
-        // Row 3 stays invalid even though its input mask is all-X.
-        write_data = {8'b00000000, 8'b00101100, 8'b01101000, 8'b01100000};
-        write_x_mask = {8'b11111111, 8'b01010010, 8'b10000111, 8'b00001111};
-        write_enable = 4'b0111;
+        write_data = {3'b100, 3'b011, 3'b010, 3'b001};
+        write_enable = 4'b1111;
         @(posedge clk);
         #1 write_enable = 4'b0000;
 
-        check_search(8'b01101110, 4'b0111);
-        check_search(8'b11111111, 4'b0000);
+        @(negedge clk);
+        // Update row 1 to 101 and row 3 to XXX on the same edge.
+        // Changed data/masks on disabled rows 0 and 2 must be ignored.
+        write_data = {3'b000, 3'b000, 3'b101, 3'b000};
+        write_x_mask = {3'b111, 3'b111, 3'b000, 3'b111};
+        write_enable = 4'b1010;
+        @(posedge clk);
+        #1 write_enable = 4'b0000;
 
-        $display("PASS: assignment wildcard example (both implementations)");
+        check_search(3'b001, 4'b1001);
+        check_search(3'b010, 4'b1000);
+        check_search(3'b011, 4'b1100);
+        check_search(3'b100, 4'b1000);
+        check_search(3'b101, 4'b1010);
+        check_search(3'b000, 4'b1000);
+
+        @(negedge clk);
+        write_data = 12'b0;
+        write_x_mask = 12'b0;
+        @(posedge clk);
+        #1;
+        check_search(3'b001, 4'b1001);
+        check_search(3'b011, 4'b1100);
+        check_search(3'b101, 4'b1010);
+
+        $display("PASS: selective parallel writes preserve disabled rows (both implementations)");
         $finish;
     end
 endmodule

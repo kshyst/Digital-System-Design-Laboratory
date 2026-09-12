@@ -1,0 +1,3 @@
+VCD info: dumpfile build/tb_tcam_wildcard.vcd opened for output.
+PASS: assignment wildcard example (both implementations)
+tb_tcam_wildcard.v:62: $finish called at 36000 (1ps)

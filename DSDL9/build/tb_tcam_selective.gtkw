@@ -1,0 +1,44 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Sep 12 06:09:47 2026
+[*]
+[dumpfile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_selective.vcd"
+[dumpfile_mtime] "Sat Sep 12 06:08:06 2026"
+[dumpfile_size] 8406
+[savefile] "/home/kshyst/Desktop/University/DSDL/DSDL9/build/tb_tcam_selective.gtkw"
+[timestart] 0
+[size] 1780 880
+[pos] 40 70
+*-14.444825 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[signals_width] 620
+@200
+-Control and independent write lanes
+@28
+tb_tcam_selective.clk
+tb_tcam_selective.reset
+tb_tcam_selective.write_enable[3:0]
+tb_tcam_selective.write_data[11:0]
+tb_tcam_selective.write_x_mask[11:0]
+@200
+-Search and checked results: loop / no-loop
+@28
+tb_tcam_selective.search_data[2:0]
+tb_tcam_selective.match_loop[3:0]
+tb_tcam_selective.match_no_loop[3:0]
+@200
+-Loop implementation: stored rows
+@28
+tb_tcam_selective.loop.valid_parameters.entries[0].entry.stored_data[2:0]
+tb_tcam_selective.loop.valid_parameters.entries[1].entry.stored_data[2:0]
+tb_tcam_selective.loop.valid_parameters.entries[2].entry.stored_data[2:0]
+tb_tcam_selective.loop.valid_parameters.entries[3].entry.stored_data[2:0]
+tb_tcam_selective.loop.valid_parameters.entries[0].entry.stored_x_mask[2:0]
+tb_tcam_selective.loop.valid_parameters.entries[2].entry.stored_x_mask[2:0]
+tb_tcam_selective.loop.valid_parameters.entries[3].entry.stored_x_mask[2:0]
+@200
+-No-loop implementation: first / last stored rows
+@28
+tb_tcam_selective.no_loop.valid_parameters.entries[0].stored_data[2:0]
+tb_tcam_selective.no_loop.valid_parameters.entries[3].stored_data[2:0]
+[pattern_trace] 1
+[pattern_trace] 0

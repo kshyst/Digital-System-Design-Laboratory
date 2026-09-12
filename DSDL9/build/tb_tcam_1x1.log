@@ -1,0 +1,3 @@
+VCD info: dumpfile build/tb_tcam_1x1.vcd opened for output.
+PASS: 1 x 1 minimum size and synchronous reset priority (both implementations)
+tb_tcam_1x1.v:82: $finish called at 116000 (1ps)

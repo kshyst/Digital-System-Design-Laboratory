@@ -1,10 +1,10 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-// Checks the Experiment 9 wildcard example in both implementations.
-module tb_tcam_wildcard;
-    localparam integer DATA_WIDTH = 8;
-    localparam integer DEPTH = 4;
+// 1 x 1 minimum size and synchronous reset priority
+module tb_tcam_1x1;
+    localparam integer DATA_WIDTH = 1;
+    localparam integer DEPTH = 1;
     reg clk = 1'b0;
     reg reset = 1'b1;
     reg [DEPTH-1:0] write_enable = 0;
@@ -41,24 +41,44 @@ module tb_tcam_wildcard;
     endtask
 
     initial begin
-        $dumpfile("build/tb_tcam_wildcard.vcd");
-        $dumpvars(0, tb_tcam_wildcard);
+        $dumpfile("build/tb_tcam_1x1.vcd");
+        $dumpvars(0, tb_tcam_1x1);
         @(posedge clk);
         #1 reset = 1'b0;
 
+        check_search(1'b0, 1'b0);
+        check_search(1'b1, 1'b0);
         @(negedge clk);
-        // Rows 0..2: 0110XXXX, X1101XXX, 0X1X11X0.
-        // Row 3 stays invalid even though its input mask is all-X.
-        write_data = {8'b00000000, 8'b00101100, 8'b01101000, 8'b01100000};
-        write_x_mask = {8'b11111111, 8'b01010010, 8'b10000111, 8'b00001111};
-        write_enable = 4'b0111;
+        write_data = 1'b1;
+        write_enable = 1'b1;
         @(posedge clk);
-        #1 write_enable = 4'b0000;
+        #1 write_enable = 1'b0;
+        check_search(1'b1, 1'b1);
+        check_search(1'b0, 1'b0);
 
-        check_search(8'b01101110, 4'b0111);
-        check_search(8'b11111111, 4'b0000);
+        @(negedge clk);
+        write_data = 1'b0;
+        write_x_mask = 1'b1;
+        write_enable = 1'b1;
+        @(posedge clk);
+        #1 write_enable = 1'b0;
+        check_search(1'b0, 1'b1);
+        check_search(1'b1, 1'b1);
 
-        $display("PASS: assignment wildcard example (both implementations)");
+        @(negedge clk);
+        reset = 1'b1;
+        write_enable = 1'b1;
+        #1;
+        if (match_loop !== 1'b1 || match_no_loop !== 1'b1)
+            $fatal(1, "Reset acted before the rising clock edge");
+        @(posedge clk);
+        #1;
+        reset = 1'b0;
+        write_enable = 1'b0;
+        check_search(1'b0, 1'b0);
+        check_search(1'b1, 1'b0);
+
+        $display("PASS: 1 x 1 minimum size and synchronous reset priority (both implementations)");
         $finish;
     end
 endmodule
