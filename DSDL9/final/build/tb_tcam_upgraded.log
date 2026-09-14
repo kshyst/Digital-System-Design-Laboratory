@@ -1,0 +1,3 @@
+VCD info: dumpfile build/tb_tcam_upgraded.vcd opened for output.
+PASS: tcam_upgraded 16 x 16 addressed writes, masks, hold, and reset
+tb/tb_tcam_upgraded.v:107: $finish called at 218000 (1ps)

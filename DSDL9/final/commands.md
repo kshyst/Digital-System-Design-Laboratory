@@ -1,0 +1,195 @@
+# DSDL9: run tests and view waveforms
+
+Run these commands from the repository root:
+
+```bash
+cd DSDL9/final
+mkdir -p build
+```
+
+## Generate the VCD files
+
+`tcam.v` uses a generate loop; `tcam_no_loop.v` uses an instance array.
+Both reuse `tcam_entry.v`. Each bit of `write_enable` selects its own entry.
+Data and X masks are packed as `{row_last, ..., row_1, row_0}`; the search key is shared.
+
+The parallel-write tests below check **both implementations** against expected results, print `PASS`,
+and save their VCDs in `build/`.
+Sizes below mean **entry count × bits per entry**.
+
+### 16 × 16: load sixteen different values on one rising edge
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_write -o /tmp/dsdl9-write.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_write.v &&
+vvp /tmp/dsdl9-write.vvp
+```
+
+### 16 × 16: independent masks, wildcard matches, and selective writes
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_16x16 -o /tmp/dsdl9-16x16.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_16x16.v &&
+vvp /tmp/dsdl9-16x16.vvp
+```
+
+This test checks 72 searches in both implementations. The first load gives each
+entry a different mask bit; the second updates only entries 1, 8, and 15.
+
+### 4 × 3: independent wildcard masks and all eight search keys
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_4x3 -o /tmp/dsdl9-4x3.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_4x3.v &&
+vvp /tmp/dsdl9-4x3.vvp
+```
+
+### 4 × 3: update only selected entries
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_selective -o /tmp/dsdl9-selective.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_selective.v &&
+vvp /tmp/dsdl9-selective.vvp
+```
+
+### 1 × 1: minimum valid size and reset priority
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_1x1 -o /tmp/dsdl9-1x1.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_1x1.v &&
+vvp /tmp/dsdl9-1x1.vvp
+```
+
+### 3 × 5: non-power-of-two entry count
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_3x5 -o /tmp/dsdl9-3x5.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_3x5.v &&
+vvp /tmp/dsdl9-3x5.vvp
+```
+
+### 4 × 8: the assignment's three wildcard patterns
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_wildcard -o /tmp/dsdl9-wildcard.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_wildcard.v &&
+vvp /tmp/dsdl9-wildcard.vvp
+```
+
+### 16 × 16: addressed writes with the upgraded top level
+
+This separate test checks `tcam_upgraded` at 16 × 16 only. The module accepts
+`DATA_WIDTH` and `DEPTH`; it writes one addressed entry per clock.
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_upgraded -o /tmp/dsdl9-upgraded.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_upgraded.v tb/tb_tcam_upgraded.v &&
+vvp /tmp/dsdl9-upgraded.vvp
+```
+
+## Open the waveforms with the evidence signals already added
+
+The `.gtkw` files retain signal selection, number formats, zoom, and the marker-free view.
+The hierarchy setting keeps entry numbers visible in the signal names.
+
+```bash
+gtkwave -4 'hier_max_level 3' build/tb_tcam_write.vcd build/tb_tcam_write.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_4x3.vcd build/tb_tcam_4x3.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_selective.vcd build/tb_tcam_selective.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_1x1.vcd build/tb_tcam_1x1.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_3x5.vcd build/tb_tcam_3x5.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_wildcard.vcd build/tb_tcam_wildcard.gtkw &
+```
+
+### Full-size 16 × 16 views
+
+Open the complete view to see all sixteen data/mask pairs for each implementation
+(scroll vertically). Entries are ordered 0–15, each data signal followed by its mask.
+
+```bash
+gtkwave -4 'hier_max_level 3' build/tb_tcam_16x16.vcd build/tb_tcam_16x16.gtkw &
+```
+
+Or run one of these focused views. They restore the signal groups and zoom used
+in the screenshots; all use the same VCD. No signals need to be added manually.
+
+```bash
+gtkwave -4 'hier_max_level 3' build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_0_3.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_4_7.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_8_11.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_16x16.vcd build/tb_tcam_16x16_rows_12_15.gtkw &
+gtkwave -4 'hier_max_level 3' build/tb_tcam_16x16.vcd build/tb_tcam_16x16_selective.gtkw &
+```
+
+If a marker is added accidentally, choose **Markers → Delete Primary Marker** and
+**Markers → Collect All Named Markers** before taking a screenshot.
+
+| Screenshot in `report_src/figs/` | Testbench | What it proves |
+| --- | --- | --- |
+| `write-16x16.png` | `tb_tcam_write.v` | Different entries load on the same edge; all sixteen search results are correct. |
+| `16x16-rows-0-3.png` | `tb_tcam_16x16.v` | Rows 0–3: simultaneous storage, independent mask bits 0–3, exact/masked matches and misses. |
+| `16x16-rows-4-7.png` | `tb_tcam_16x16.v` | Rows 4–7: mask bits 4–7 ignore only their own bit. |
+| `16x16-rows-8-11.png` | `tb_tcam_16x16.v` | Rows 8–11: upper-byte mask bits 8–11 work in both implementations. |
+| `16x16-rows-12-15.png` | `tb_tcam_16x16.v` | Rows 12–15: mask bits 12–15, including the highest bit and last entry. |
+| `16x16-selective-writes.png` | `tb_tcam_16x16.v` | Enable 8102 updates entries 1, 8, 15 at 505 ns; entries 0 and 7 remain unchanged; overlapping matches are preserved. |
+| `4x3-wildcards.png` | `tb_tcam_4x3.v` | Four 3-bit entries have independent masks; all eight keys are checked. |
+| `selective-writes.png` | `tb_tcam_selective.v` | Only enabled entries change; disabled entries retain data and masks. |
+| `1x1-reset.png` | `tb_tcam_1x1.v` | One 1-bit entry supports exact/X matches and synchronous reset priority. |
+| `3x5-depth.png` | `tb_tcam_3x5.v` | Three 5-bit entries retain separate data and match results. |
+| `wildcard-example.png` | `tb_tcam_wildcard.v` | `01101110` matches all three assignment patterns (`0111`); `11111111` gives `0000`. |
+| `zero-width-rejected.png` | `tb_tcam_invalid.v` | Both versions reject one 0-bit entry at time zero with exit status 1. |
+
+## 1 × 0 edge case: expected rejection
+
+Zero width is invalid: Verilog `[-1:0]` is a two-bit range, not an empty vector.
+Both modules require `DATA_WIDTH >= 1` and `DEPTH >= 1`.
+This test must terminate at time zero with `TCAM requires DATA_WIDTH >= 1 and DEPTH >= 1`.
+It does not produce a behavioral VCD; the evidence is the terminal output.
+
+Run the loop version:
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_invalid -o /tmp/dsdl9-invalid-loop.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_invalid.v &&
+vvp /tmp/dsdl9-invalid-loop.vvp
+```
+
+Run the no-loop version:
+
+```bash
+iverilog -g2012 -Wall -s tb_tcam_invalid \
+  -Ptb_tcam_invalid.NO_LOOP=1 -o /tmp/dsdl9-invalid-no-loop.vvp \
+  src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_invalid.v &&
+vvp /tmp/dsdl9-invalid-no-loop.vvp
+```
+
+Both commands intentionally exit with status 1. The fallback message
+`FAIL: invalid dimensions were accepted` would mean the test caught a missing guard.
+
+To check zero/negative width and count automatically for both versions:
+
+```bash
+(
+for impl in 0 1; do
+  for config in 0:1 1:0 -1:1 1:-1; do
+    width=${config%:*}
+    depth=${config#*:}
+    log="build/invalid-${width}x${depth}-${impl}.log"
+    iverilog -g2012 -Wall -s tb_tcam_invalid \
+      -Ptb_tcam_invalid.DATA_WIDTH="$width" \
+      -Ptb_tcam_invalid.DEPTH="$depth" \
+      -Ptb_tcam_invalid.NO_LOOP="$impl" \
+      -o /tmp/dsdl9-invalid.vvp \
+      src/tcam_entry.v src/tcam.v src/tcam_no_loop.v tb/tb_tcam_invalid.v || exit 1
+    if vvp /tmp/dsdl9-invalid.vvp > "$log" 2>&1; then
+      echo "FAIL: invalid dimensions were accepted"
+      exit 1
+    fi
+    grep -F "TCAM requires DATA_WIDTH >= 1 and DEPTH >= 1" "$log" || exit 1
+    grep -F "Time: 0 " "$log" || exit 1
+  done
+done
+)
+```
+
+These log filenames use **width × count**, followed by `0` (loop) or `1` (no-loop).
